@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | I&#39;am an Android Developer!</title>
+  <title>Android HIDL学习（3） ---- 注册回调 | I&#39;am an Android Developer!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="I&#39;am an Android Developer!">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;index.html">
+  <meta name="description" content="回顾一下上一节我们学会了如何创建HIDL的server端和client端，对于那些没玩过Android O或者以上的BSP开发者而言，可以吹上一阵子牛逼了，毕竟比人家多了一个技能，面试的时候也可以装一下了^_^ OK，我们还知道了在Android O或者以上的Android版本上创建一个HAL模块的一般流程是如何的，我们这一节来看一个比较简单的东西，也是每个模块基本必不可少的一个玩意儿，那就是回调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android HIDL学习（3） ---- 注册回调">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;Android-HIDL-Study-3-register-callback&#x2F;index.html">
 <meta property="og:site_name" content="I&#39;am an Android Developer!">
+<meta property="og:description" content="回顾一下上一节我们学会了如何创建HIDL的server端和client端，对于那些没玩过Android O或者以上的BSP开发者而言，可以吹上一阵子牛逼了，毕竟比人家多了一个技能，面试的时候也可以装一下了^_^ OK，我们还知道了在Android O或者以上的Android版本上创建一个HAL模块的一般流程是如何的，我们这一节来看一个比较简单的东西，也是每个模块基本必不可少的一个玩意儿，那就是回调">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-a6e3edad1846c1ea.gif?imageMogr2&#x2F;auto-orient&#x2F;strip">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-7e0b002c7c315433.jpg?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-77b61add05ab5195.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="article:published_time" content="2019-12-15T13:03:17.000Z">
+<meta property="article:modified_time" content="2019-12-15T13:37:12.429Z">
 <meta property="article:author" content="Jay Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-a6e3edad1846c1ea.gif?imageMogr2&#x2F;auto-orient&#x2F;strip">
   
     <link rel="alternative" href="/atom.xml" title="I&#39;am an Android Developer!" type="application/atom+xml">
   
@@ -150,163 +158,114 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Android-HIDL-Study-3-register-callback" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-6-FMQ/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:15:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-6-FMQ/">Android HIDL学习（6）---Fast Message Queue</a>
+    <h1 class="article-title" itemprop="name">
+      Android HIDL学习（3） ---- 注册回调
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-5-Design/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:13:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-5-Design/">Android HIDL学习（5） ---- 设计要素</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-4-Performance/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-4-Performance/">Android HIDL学习（4） ---- 高性能比较（HIDL, FMQ, MMAP）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-3-register-callback/" class="archive-article-date">
+        
+        <a href="/2019/12/15/Android-HIDL-Study-3-register-callback/" class="archive-article-date">
   	<time datetime="2019-12-15T13:03:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-3-register-callback/">Android HIDL学习（3） ---- 注册回调</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="回顾一下"><a href="#回顾一下" class="headerlink" title="回顾一下"></a><strong>回顾一下</strong></h4><p>上一节我们学会了如何创建HIDL的server端和client端，对于那些没玩过Android O或者以上的BSP开发者而言，可以吹上一阵子牛逼了，毕竟比人家多了一个技能，面试的时候也可以装一下了^_^</p>
+<p>OK，我们还知道了在Android O或者以上的Android版本上创建一个HAL模块的一般流程是如何的，我们这一节来看一个比较简单的东西，也是每个模块基本必不可少的一个玩意儿，那就是回调函数。</p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
-          
+<h4 id="注册回调"><a href="#注册回调" class="headerlink" title="注册回调"></a><strong>注册回调</strong></h4><p>怎么个回事呢，我们来举一个栗子</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-a6e3edad1846c1ea.gif?imageMogr2/auto-orient/strip" alt="2bb314c97dde411a864933d3a2043b5f_th.gif"></p>
+<p>我们把HAL独立为一个单独的进程，client也是一个单独的进程，那么对于一般的模块而言，都是需要从底层（HAL以及以下）获取数据，比如sensor，需要获取sensor数据，Camera，需要获取camera的raw、yuv等数据流，那么对于软件设计而言，如果是同步的话，很简单，我们通过getXXX()函数来获取即可，但是如果是异步的，比如底层的实现是中端的机制，你不知道他什么时候会出来数据，那么这个时候通常的，我们会通过callback来实现<strong>异步的回调</strong>。</p>
+<p>看下面的图就比较清楚了</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-7e0b002c7c315433.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HAL-CALLBACK.jpg"></p>
+<p>我们这一节就来实现简单的回调机制。</p>
+<h4 id="实战演练"><a href="#实战演练" class="headerlink" title="实战演练"></a>实战演练</h4><p>这个例子很简单，写一个简单的HAL模块，就跟之前的差不多，然后我们在<strong>.hal</strong>文件里面加入一个<strong>setCallback</strong>函数，传入一个callback指针，当我们HAL的server端起来的时候会起一个线程，每隔5秒钟时间调用一下传入的这个回调函数，实现回调的机制，OK，废话不多说，上代码。</p>
+<p>看一下HIDL 接口IHello.hal</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">package vendor.sample.hello@<span class="number">1.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> IHelloCallback;</span><br><span class="line"></span><br><span class="line">interface IHello &#123;</span><br><span class="line">    init();</span><br><span class="line">    <span class="built_in">release</span>();</span><br><span class="line">    setCallback(IHelloCallback callback);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>定义了三个接口</p>
+<ul>
+<li><p>init：做一些初始化的动作</p>
+</li>
+<li><p>release：做一些释放的动作</p>
+</li>
+<li><p>setCallback：让client端设置一个callback方法到server端</p>
+</li>
+</ul>
+<p>下面来看看这个callback里面都定义了些啥，我们要为这个callback些一个接口IHelloCallback.hal</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package vendor.sample.hello@<span class="number">1.0</span>;</span><br><span class="line">​</span><br><span class="line">interface IHelloCallback &#123;</span><br><span class="line"> <span class="function">oneway <span class="title">onNotify</span><span class="params">(HalEvent event)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>回调函数里面有一个回调方法，可以让server传一个HalEvent的结构体到client端，这个结构体也是自定义的，在types.hal，可以定义自己喜欢的类型，这里是一个简单的int成员变量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package vendor.sample.hello@<span class="number">1.0</span>;</span><br><span class="line">​</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">HalEvent</span> &#123;</span></span><br><span class="line"> <span class="keyword">int32_t</span> value;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>OK，HIDL的接口定义好之后，我们来使用一条牛逼的指令为我们生产代码框架：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hidl-gen -o vendor/honeywell/common/sample/hidl-impl/sample/ -Lc++-impl -rvendor.sample:vendor/honeywell/common/sample/interfaces -randroid.hidl:system/libhidl/transport vendor.sample.hello@1.0</span><br></pre></td></tr></table></figure>
+<p>生成了一坨代码：</p>
+<p>├── Android.mk<br>├── hidl-impl<br>│ ├── Android.mk<br>│ └── sample  <strong><em>│<br>├── Android.bp</em></strong>  <strong>*<br>│ ├── HelloCallback.cpp*</strong>  <strong>*<br>│ ├── HelloCallback.h*</strong>  <strong>*<br>│ ├── Hello.cpp*</strong>  <strong>*<br>│ └── Hello.h*</strong><br>└── interfaces<br>  ​ ├── Android.bp<br>  ​   └── hello<br>  ​     └── 1.0<br>  ​       ├── Android.bp<br>        ​ ├── IHelloCallback.hal<br>        ​ ├── IHello.hal<br>  ​       └── types.hal</p>
+<p>其中有一个代码是用不到的，HelloCallback.h和HelloCallback.cpp，也不知道为什么指令会为我们创建出来，肯定是个bug。删掉他们。</p>
+<p>好了接下来就是写代码了，注意，要把hidl-impl/sample/Android.bp里面的HelloCallback.cpp也要删掉</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cc_library_shared &#123;</span><br><span class="line"> proprietary: true,</span><br><span class="line"> srcs: [</span><br><span class="line"> "Hello.cpp",</span><br><span class="line"> ],</span><br><span class="line"> shared_libs: [</span><br><span class="line"> "libhidlbase",</span><br><span class="line"> "libhidltransport",</span><br><span class="line"> "libutils",</span><br><span class="line"> "vendor.sample.hello@1.0",</span><br><span class="line"> ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就变成这个样子了。在vendor分区，要起一个service来handle这个HIDL 接口，这个我们在上一节中有详细讲到，贴一下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vendor/sample/hello/1.0/IHello.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/LegacySupport.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="keyword">using</span> vendor::sample::hello::V1_0::IHello;</span><br><span class="line"><span class="keyword">using</span> android::hardware::defaultPassthroughServiceImplementation;</span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">return</span> defaultPassthroughServiceImplementation&lt;IHello&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后是makefile：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">cc_binary &#123;</span><br><span class="line"> name: "vendor.sample.hello@1.0-service",</span><br><span class="line"> relative_install_path: "hw",</span><br><span class="line"> defaults: ["hidl_defaults"],</span><br><span class="line"> vendor: true,</span><br><span class="line"> init_rc: ["vendor.sample.hello@1.0-service.rc"],</span><br><span class="line"> srcs: [</span><br><span class="line"> "service.cpp",</span><br><span class="line"> ],</span><br><span class="line"> shared_libs: [</span><br><span class="line"> "liblog",</span><br><span class="line"> "libutils",</span><br><span class="line"> "libhidlbase",</span><br><span class="line"> "libhidltransport",</span><br><span class="line"> "libutils",</span><br><span class="line"> "vendor.sample.hello@1.0",</span><br><span class="line"> ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后编译一把，应该就能看到生产impl的库和一个可执行程序用来起server的。</p>
+<p>看一下下面的代码，是主体实现端的代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_TAG     <span class="meta-string">"Sample"</span></span></span><br><span class="line">​</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Hello.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;log/log.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="keyword">namespace</span> vendor &#123;</span><br><span class="line"><span class="keyword">namespace</span> sample &#123;</span><br><span class="line"><span class="keyword">namespace</span> hello &#123;</span><br><span class="line"><span class="keyword">namespace</span> V1_0 &#123;</span><br><span class="line"><span class="keyword">namespace</span> implementation &#123;</span><br><span class="line">​</span><br><span class="line">sp&lt;IHelloCallback&gt; Hello::mCallback = <span class="literal">nullptr</span>;</span><br><span class="line">​</span><br><span class="line"><span class="comment">// Methods from ::vendor::sample::hello::V1_0::IHello follow.</span></span><br><span class="line">Return&lt;<span class="keyword">void</span>&gt; Hello::init() &#123;</span><br><span class="line"> mExit = <span class="literal">false</span>;</span><br><span class="line"> <span class="built_in">run</span>(<span class="string">"sample"</span>);</span><br><span class="line"> <span class="keyword">return</span> Void();</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line">Return&lt;<span class="keyword">void</span>&gt; Hello::<span class="built_in">release</span>() &#123;</span><br><span class="line"> mExit = <span class="literal">true</span>;</span><br><span class="line"> <span class="keyword">return</span> Void();</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line">Return&lt;<span class="keyword">void</span>&gt; Hello::setCallback(<span class="keyword">const</span> sp&lt;::vendor::sample::hello::V1_0::IHelloCallback&gt;&amp; callback) &#123;</span><br><span class="line"> mCallback = callback;</span><br><span class="line"> <span class="keyword">if</span>(mCallback != <span class="literal">nullptr</span>) &#123;</span><br><span class="line"> ALOGD(<span class="string">"setCallback: done"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">​</span><br><span class="line"><span class="keyword">return</span> Void();</span><br><span class="line">​</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line"><span class="keyword">bool</span> Hello::threadLoop()</span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">static</span> <span class="keyword">int32_t</span> count = <span class="number">0</span>;</span><br><span class="line"> HalEvent event;</span><br><span class="line"> <span class="keyword">while</span>(!mExit) &#123;</span><br><span class="line"> ::sleep(<span class="number">1</span>);</span><br><span class="line"> event.value = count ++;</span><br><span class="line"> <span class="keyword">if</span>(mCallback != <span class="literal">nullptr</span>) &#123;</span><br><span class="line"> mCallback-&gt;onNotify(event);</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> ALOGD(<span class="string">"threadLoop: exit"</span>);</span><br><span class="line"> <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line"><span class="comment">// Methods from ::android::hidl::base::V1_0::IBase follow.</span></span><br><span class="line">​</span><br><span class="line"><span class="function">IHello* <span class="title">HIDL_FETCH_IHello</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* <span class="comment">/* name */</span>)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">new</span> Hello();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">&#125;  <span class="comment">// namespace implementation</span></span><br><span class="line">&#125;  <span class="comment">// namespace V1_0</span></span><br><span class="line">&#125;  <span class="comment">// namespace hello</span></span><br><span class="line">&#125;  <span class="comment">// namespace sample</span></span><br><span class="line">&#125;  <span class="comment">// namespace vendor</span></span><br></pre></td></tr></table></figure>
+
+<p>在init函数里面调用run方法去启动线程，线程的主体是threadLoop函数，可以看到在线程里面，是一个死循环，会每隔1秒钟去callback一次方法，还是很简单的。</p>
+<p>下面是client的实现，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_TAG     <span class="meta-string">"TestHello"</span></span></span><br><span class="line">​</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;log/log.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vendor/sample/hello/1.0/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vendor/sample/hello/1.0/IHello.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vendor/sample/hello/1.0/IHelloCallback.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/Status.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/HidlSupport.h&gt;</span></span></span><br><span class="line">​</span><br><span class="line"><span class="keyword">using</span> android::sp;</span><br><span class="line"><span class="keyword">using</span> android::hardware::Return;</span><br><span class="line"><span class="keyword">using</span> android::hardware::Void;</span><br><span class="line">​</span><br><span class="line"><span class="keyword">using</span> vendor::sample::hello::V1_0::HalEvent;</span><br><span class="line"><span class="keyword">using</span> vendor::sample::hello::V1_0::IHello;</span><br><span class="line"><span class="keyword">using</span> vendor::sample::hello::V1_0::IHelloCallback;</span><br><span class="line">​</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloCallback</span>:</span> <span class="keyword">public</span> IHelloCallback &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"> HelloCallback() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line">~HelloCallback() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line">Return&lt;<span class="keyword">void</span>&gt; onNotify(<span class="keyword">const</span> HalEvent&amp; event) &#123;</span><br><span class="line">​</span><br><span class="line"> ALOGD(<span class="string">"onNotify: value = %d"</span>, event.value);</span><br><span class="line">​</span><br><span class="line"> <span class="keyword">return</span> Void();</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line">&#125;;</span><br><span class="line">​</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> sp&lt;IHello&gt; service = IHello::getService();</span><br><span class="line"> <span class="keyword">if</span>(service == <span class="literal">nullptr</span>) &#123;</span><br><span class="line"> ALOGE(<span class="string">"main: failed to get hello service"</span>);</span><br><span class="line"> <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"> &#125;</span><br><span class="line">​</span><br><span class="line">sp&lt;HelloCallback&gt; callback = <span class="keyword">new</span> HelloCallback();</span><br><span class="line">service-&gt;setCallback(callback);</span><br><span class="line">service-&gt;init();</span><br><span class="line">​</span><br><span class="line">::sleep(<span class="number">10</span>);</span><br><span class="line">service-&gt;<span class="built_in">release</span>();</span><br><span class="line">​</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">​</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>OK，在client端就是简单的打印了callback回来的event里面的数据。</p>
+<p>下面是makefile的代码:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cc_binary &#123;</span><br><span class="line"> name: "test_hello",</span><br><span class="line"> srcs: [</span><br><span class="line"> "test_hello.cpp",</span><br><span class="line"> ],</span><br><span class="line"> shared_libs: [</span><br><span class="line"> "liblog",</span><br><span class="line"> "libutils",</span><br><span class="line"> "libhidlbase",</span><br><span class="line"> "libhidltransport",</span><br><span class="line"> "libutils",</span><br><span class="line"> "vendor.sample.hello@1.0",</span><br><span class="line"> ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在可以手动运行测试程序了，还是跟上一节介绍的一样，可以看到logcat有如下输出：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-77b61add05ab5195.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1543998428670.png"></p>
+<p>OK，达到了我们的预期效果了。</p>
+<p>这一节我们就简单的介绍了在Android O/P里面使用HIDL的回调机制是如何实现的。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -323,101 +282,113 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/15/Android-HIDL-Study-3-register-callback/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-2-Hello-World/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:02:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2019/12/15/Android-HIDL-Study-4-Performance/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Android HIDL学习（4） ---- 高性能比较（HIDL, FMQ, MMAP）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/15/Android-HIDL-Study-2-Hello-World/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android HIDL学习（2） ----  HelloWorld</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-2-Hello-World/">Android HIDL学习（2） ----  HelloWorld</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-1-overview/" class="archive-article-date">
-  	<time datetime="2019-12-15T12:59:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-1-overview/">Android HIDL学习（1） ----  简介</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -440,8 +411,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

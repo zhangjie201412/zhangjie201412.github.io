@@ -6,15 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | I&#39;am an Android Developer!</title>
+  <title>Android HIDL学习（2） ----  HelloWorld | I&#39;am an Android Developer!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="I&#39;am an Android Developer!">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;index.html">
+  <meta name="description" content="写在前面程序员有个癖好，无论是学习什么新知识，都喜欢以HelloWorld作为一个简单的例子来开头，咱们也不例外。 OK，咱这里都是干货，废话就不多说啦，学习HIDL呢咱们还是需要一些准备工作和门槛的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android HIDL学习（2） ----  HelloWorld">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;Android-HIDL-Study-2-Hello-World&#x2F;index.html">
 <meta property="og:site_name" content="I&#39;am an Android Developer!">
+<meta property="og:description" content="写在前面程序员有个癖好，无论是学习什么新知识，都喜欢以HelloWorld作为一个简单的例子来开头，咱们也不例外。 OK，咱这里都是干货，废话就不多说啦，学习HIDL呢咱们还是需要一些准备工作和门槛的。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-8164e88cfd918ab4.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-385176b88e488239.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-bf82ce77f6ab243e.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-eb7856aff32586a1.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-1b76ec4028b24f65.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="article:published_time" content="2019-12-15T13:02:17.000Z">
+<meta property="article:modified_time" content="2019-12-15T13:37:37.621Z">
 <meta property="article:author" content="Jay Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-8164e88cfd918ab4.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
   
     <link rel="alternative" href="/atom.xml" title="I&#39;am an Android Developer!" type="application/atom+xml">
   
@@ -150,205 +160,210 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Android-HIDL-Study-2-Hello-World" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-6-FMQ/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:15:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-6-FMQ/">Android HIDL学习（6）---Fast Message Queue</a>
+    <h1 class="article-title" itemprop="name">
+      Android HIDL学习（2） ----  HelloWorld
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-5-Design/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:13:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-5-Design/">Android HIDL学习（5） ---- 设计要素</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-4-Performance/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-4-Performance/">Android HIDL学习（4） ---- 高性能比较（HIDL, FMQ, MMAP）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-3-register-callback/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:03:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-3-register-callback/">Android HIDL学习（3） ---- 注册回调</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-2-Hello-World/" class="archive-article-date">
+        
+        <a href="/2019/12/15/Android-HIDL-Study-2-Hello-World/" class="archive-article-date">
   	<time datetime="2019-12-15T13:02:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-2-Hello-World/">Android HIDL学习（2） ----  HelloWorld</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a><strong>写在前面</strong></h4><p>程序员有个癖好，无论是学习什么新知识，都喜欢以HelloWorld作为一个简单的例子来开头，咱们也不例外。</p>
+<p>OK，咱这里都是干货，废话就不多说啦，学习HIDL呢咱们还是需要一些准备工作和门槛的。</p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
-          
+<p>准备工作：</p>
+<ul>
+<li><p>Android BSP编译环境</p>
+</li>
+<li><p>Android设备的BSP代码</p>
+</li>
+<li><p>Android设备，用来跑测试代码</p>
+</li>
+</ul>
+<p>我这边使用的是公司的设备，打个小广告哈，咱们是世界500强做Android工业手机的，这里使用最近的项目使用的设备，基于Qualcomm 骁龙660芯片，基于这个平台来做开发。</p>
+<p>当然了，如果手头上没有设备的话，你也可以使用Andnroid模拟器做开发，Android模拟器的镜像可以使用官方的AOSP代码来编译，但是注意的是如果使用模拟器，kernel要去下载goldfish的代码，这个我这里就不赘述了，可以google了解一下。</p>
+<h4 id="Naruto"><a href="#Naruto" class="headerlink" title="Naruto"></a><strong>Naruto</strong></h4><p>我们需要给这个简单的例子起一个牛逼的名字，我这里叫Naruto，不要问我为什么，哥是一个铁打的火影迷，哈哈，就这么定了，就叫Naruto了，那么那么我们就来说一段故事吧：</p>
+<p>咱们可是要写一个Android的HAL，大家不要把初衷搞混了，我们看看AOSP有哪些HAL：</p>
+<ul>
+<li><p>Camera</p>
+</li>
+<li><p>Audio</p>
+</li>
+<li><p>Sensor</p>
+</li>
+<li><p>等等</p>
+</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-8164e88cfd918ab4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ape_fwk_hal.png"></p>
+<p>这些啊都是Android设备上的硬件，因为Google理论上只关心Android的框架层和上层软件，但是上层软件依赖于底层的硬件实现，但是每家手机厂商，或者说是CPU厂商底层硬件的实现都是不一样的，所以这个HAL层基本都是手机厂商或者CPU厂商去实现的，Google只是作为一个框架的指导，和Framework层API的接口定义，这些接口的实现都得由HAL去完成。</p>
+<p>那么我们的Naruto就肩负了这个重任喽，控制底层硬件嘛，底层硬件都是由Linux kernel驱动控制的，提供文件读写就可以简单控制驱动啦，咱们这边就搞虚拟驱动好了，省略了kernel driver的实现，有机会我们还可以在别的文章中去聊聊驱动，哈哈，毕竟哥啥都会。（吹牛逼不用上税）</p>
+<p>等等，我们这个是HelloWorld，好吧，Naruto，你就提供一个HelloWorld的接口吧，大材小用了。</p>
+<h4 id="HIDL-接口文件定义"><a href="#HIDL-接口文件定义" class="headerlink" title="HIDL 接口文件定义"></a><strong>HIDL 接口文件定义</strong></h4><p>进入代码，我们假设Naruto作为标准AOSP的HAL，我们就把代码揉进标准HAL层去，进入代码目录创建HIDL目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p hardware/interfaces/naruto/1.0/default</span><br></pre></td></tr></table></figure>
+
+<p>接着创建接口描述文件INaruto.hal，放在刚才创建的目录中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> android.hardware.naruto@<span class="number">1.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">INaruto</span> </span>&#123;</span><br><span class="line">    helloWorld(string name) generates (string result);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>没错这是一个Google定义的语言格式，C++和Java的结合体，我相信咱们搞Android BSP来发的，什么语言不会呢，对不：</p>
+<ul>
+<li><p>汇编：bootloader和kernel中可能会用到</p>
+</li>
+<li><p>C语言：这你丫不会，你玩毛的Linux Kernel啊</p>
+</li>
+<li><p>C++：这你丫不会，你就别搞Android底层开发了，HAL和中间库</p>
+</li>
+<li><p>Java：这么再不会就自杀吧，framework和app的代码都是Java的</p>
+</li>
+<li><p>Python：这个不会么也没事，编译相关的</p>
+</li>
+<li><p>Shell：这个不可能不会</p>
+</li>
+<li><p>Makefile：肯定会的，不会跳楼吧</p>
+</li>
+</ul>
+<p>这里我们定义了一个INaruto接口文件，简单的添加了一个helloWorld接口，传入是一个string，返回一个string，后面我们会来实现这个接口。</p>
+<h4 id="生成HAL-相关文件"><a href="#生成HAL-相关文件" class="headerlink" title="生成HAL 相关文件"></a><strong>生成HAL 相关文件</strong></h4><p>既然Google在Android 8.1要我们把HAL层换一次血，那么他肯定会有一些列相关的工具来方便我们开发喽，不然谁搞啊，对不对。</p>
+<p>所以呢，Google还是帮我们提供了一些工具来生成HAL层相关的代码框架和代码实例，这样子我们只需要关心实现部分，而不需要写一堆无用代码，浪费时间在搞Makefile和一些低级错误上。</p>
+<p>使用hidl-gen工具</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> PACKAGE=android.hardware.naruto@1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> LOC=hardware/interfaces/naruto/1.0/default/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> make hidl-gen -j64</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> hidl-gen -o <span class="variable">$LOC</span> -Lc++-impl -randroid.hardware:hardware/interfaces -randroid.hidl:system/libhidl/transport <span class="variable">$PACKAGE</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> hidl-gen -o <span class="variable">$LOC</span> -Landroidbp-impl -randroid.hardware:hardware/interfaces -randroid.hidl:system/libhidl/transport <span class="variable">$PACKAGE</span></span></span><br></pre></td></tr></table></figure>
+
+<p>然后使用脚本来更新Makefile，自动生成Android,mk, Android.bp</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ./hardware/interfaces/update-makefiles.sh</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，我们来添加两个空文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch hardware/interfaces/naruto/1.0/default/android.hardware.naruto@1.0-service.rc</span><br><span class="line">touch hardware/interfaces/naruto/1.0/default/service.cpp</span><br></pre></td></tr></table></figure>
+
+<p>现在我们的代码目录: hardware/interface/naruto:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">├── 1.0</span><br><span class="line">│   ├── Android.bp</span><br><span class="line">│   ├── Android.mk</span><br><span class="line">│   ├── default</span><br><span class="line">│   │   ├── Android.bp</span><br><span class="line">│   │   ├── android.hardware.naruto@1.0-service.rc</span><br><span class="line">│   │   ├── Naruto.cpp</span><br><span class="line">│   │   ├── Naruto.h</span><br><span class="line">│   │   └── service.cpp</span><br><span class="line">│   └── INaruto.hal</span><br><span class="line">└── Android.bp</span><br></pre></td></tr></table></figure>
+<p>是不是so easy，我们写代码就写了一个INaruto.hal，其余代码都是自动生成的，特别是Naruto.cpp和Naruto.h这两个文件是实现接口的关键文件。</p>
+<h4 id="实现HAL实现端的共享库"><a href="#实现HAL实现端的共享库" class="headerlink" title="实现HAL实现端的共享库"></a><strong>实现HAL实现端的共享库</strong></h4><p>来来来，vim走起来，打开Naruto.h和Naruto.cpp文件，开始要写代码了，</p>
+<p>打开Naruto.h文件，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Naruto</span> :</span> <span class="keyword">public</span> INaruto &#123;</span><br><span class="line">    <span class="comment">// Methods from INaruto follow.</span></span><br><span class="line">    Return&lt;<span class="keyword">void</span>&gt; helloWorld(<span class="keyword">const</span> hidl_string&amp; name, helloWorld_cb _hidl_cb) <span class="keyword">override</span>;</span><br><span class="line">    <span class="comment">// Methods from ::android::hidl::base::V1_0::IBase follow.</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">FIXME:</span> most likely delete, this is only for passthrough implementations</span></span><br><span class="line"><span class="comment">// extern "C" INaruto* HIDL_FETCH_INaruto(const char* name);</span></span><br></pre></td></tr></table></figure>
+
+<p>我们知道，HIDL的实现有两种方式，一种是Binderized模式，另一种是Passthrough模式，我们看到上面有两行注释掉的代码，看来这个代码是关键，来选择实现方式是Binderized还是Passthrough。</p>
+<p>我们这里使用Passthrough模式来演示，其实大家后面尝试这两种方式后会发现其实这两种本质是一样的，目前大部分厂商使用的都是Passthrough来延续以前的很多代码，但是慢慢的都会被改掉的，所以我们来打开这个注释。</p>
+<p>Naruto.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">ifndef</span> ANDROID_HARDWARE_NARUTO_V1_0_NARUTO_H</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> ANDROID_HARDWARE_NARUTO_V1_0_NARUTO_H</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;android/hardware/naruto/1.0/INaruto.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/MQDescriptor.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/Status.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> android &#123;</span><br><span class="line"><span class="keyword">namespace</span> hardware &#123;</span><br><span class="line"><span class="keyword">namespace</span> naruto &#123;</span><br><span class="line"><span class="keyword">namespace</span> V1_0 &#123;</span><br><span class="line"><span class="keyword">namespace</span> implementation &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> ::android::hardware::hidl_array;</span><br><span class="line"><span class="keyword">using</span> ::android::hardware::hidl_memory;</span><br><span class="line"><span class="keyword">using</span> ::android::hardware::hidl_string;</span><br><span class="line"><span class="keyword">using</span> ::android::hardware::hidl_vec;</span><br><span class="line"><span class="keyword">using</span> ::android::hardware::Return;</span><br><span class="line"><span class="keyword">using</span> ::android::hardware::Void;</span><br><span class="line"><span class="keyword">using</span> ::android::sp;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Naruto</span> :</span> <span class="keyword">public</span> INaruto &#123;</span><br><span class="line">    <span class="comment">// Methods from INaruto follow.</span></span><br><span class="line">    Return&lt;<span class="keyword">void</span>&gt; helloWorld(<span class="keyword">const</span> hidl_string&amp; name, helloWorld_cb _hidl_cb) <span class="keyword">override</span>;</span><br><span class="line">    <span class="comment">// Methods from ::android::hidl::base::V1_0::IBase follow.</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">FIXME:</span> most likely delete, this is only for passthrough implementations</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> <span class="function">INaruto* <span class="title">HIDL_FETCH_INaruto</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* name)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace implementation</span></span><br><span class="line">&#125;  <span class="comment">// namespace V1_0</span></span><br><span class="line">&#125;  <span class="comment">// namespace naruto</span></span><br><span class="line">&#125;  <span class="comment">// namespace hardware</span></span><br><span class="line">&#125;  <span class="comment">// namespace android</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">endif</span>  <span class="comment">// ANDROID_HARDWARE_NARUTO_V1_0_NARUTO_H</span></span></span><br></pre></td></tr></table></figure>
+
+<p>Naruto.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">"Naruto.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> android &#123;</span><br><span class="line"><span class="keyword">namespace</span> hardware &#123;</span><br><span class="line"><span class="keyword">namespace</span> naruto &#123;</span><br><span class="line"><span class="keyword">namespace</span> V1_0 &#123;</span><br><span class="line"><span class="keyword">namespace</span> implementation &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Methods from INaruto follow.</span></span><br><span class="line">Return&lt;<span class="keyword">void</span>&gt; Naruto::helloWorld(<span class="keyword">const</span> hidl_string&amp; name, helloWorld_cb _hidl_cb) &#123;</span><br><span class="line">    <span class="comment">// TODO implement</span></span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">100</span>];</span><br><span class="line">    ::<span class="built_in">memset</span>(buf, <span class="number">0x00</span>, <span class="number">100</span>);</span><br><span class="line">    ::<span class="built_in">snprintf</span>(buf, <span class="number">100</span>, <span class="string">"Hello World, %s"</span>, name.c_str());</span><br><span class="line">    <span class="function">hidl_string <span class="title">result</span><span class="params">(buf)</span></span>;</span><br><span class="line"></span><br><span class="line">    _hidl_cb(result);</span><br><span class="line">    <span class="keyword">return</span> Void();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Methods from ::android::hidl::base::V1_0::IBase follow.</span></span><br><span class="line"></span><br><span class="line"><span class="function">INaruto* <span class="title">HIDL_FETCH_INaruto</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* <span class="comment">/* name */</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Naruto();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace implementation</span></span><br><span class="line">&#125;  <span class="comment">// namespace V1_0</span></span><br><span class="line">&#125;  <span class="comment">// namespace naruto</span></span><br><span class="line">&#125;  <span class="comment">// namespace hardware</span></span><br><span class="line">&#125;  <span class="comment">// namespace android</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>我们打开了HIDL_FETCH的注释，让我们的HIDL使用Passthrough方式去实现</p>
+</li>
+<li><p>添加helloWorld函数的实现，简单的做了字符串拼接（学过C/C++）的同学应该都看得懂</p>
+</li>
+</ol>
+<p>然后可以查看一下Android.bp文件看一下编译生成个啥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cc_library_shared &#123;</span><br><span class="line">    name: "android.hardware.naruto@1.0-impl",</span><br><span class="line">    relative_install_path: "hw",</span><br><span class="line">    proprietary: true,</span><br><span class="line">    srcs: [</span><br><span class="line">        "Naruto.cpp",</span><br><span class="line">    ],</span><br><span class="line">    shared_libs: [</span><br><span class="line">        "libhidlbase",</span><br><span class="line">        "libhidltransport",</span><br><span class="line">        "libutils",</span><br><span class="line">        "android.hardware.naruto@1.0",</span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终会生成一个<a href="mailto:android.hardware.naruto@1.0-impl.so">android.hardware.naruto@1.0-impl.so</a>, 生成在/vendor/lib64/hw/下，我们用mmm编译生成看看</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mmm hardware/interfaces/naruto/1.0/default/</span></span><br><span class="line"></span><br><span class="line">PLATFORM_VERSION_CODENAME=REL</span><br><span class="line">PLATFORM_VERSION=8.1.0</span><br><span class="line">TARGET_PRODUCT=hon660</span><br><span class="line">TARGET_BUILD_VARIANT=userdebug</span><br><span class="line">TARGET_BUILD_TYPE=release</span><br><span class="line">TARGET_ARCH=arm64</span><br><span class="line">TARGET_ARCH_VARIANT=armv8-a</span><br><span class="line">TARGET_CPU_VARIANT=generic</span><br><span class="line">TARGET_2ND_ARCH=arm</span><br><span class="line">TARGET_2ND_ARCH_VARIANT=armv7-a-neon</span><br><span class="line">TARGET_2ND_CPU_VARIANT=cortex-a53</span><br><span class="line">HOST_ARCH=x86_64</span><br><span class="line">HOST_2ND_ARCH=x86</span><br><span class="line">HOST_OS=linux</span><br><span class="line">HOST_OS_EXTRA=Linux-3.16.0-48-generic-x86_64-with-Ubuntu-14.04-trusty</span><br><span class="line">HOST_CROSS_OS=windows</span><br><span class="line">HOST_CROSS_ARCH=x86</span><br><span class="line">HOST_CROSS_2ND_ARCH=x86_64</span><br><span class="line">HOST_BUILD_TYPE=release</span><br><span class="line">BUILD_ID=OPM1.171019.011</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> OUT_DIR=out</span></span><br><span class="line"></span><br><span class="line">[2/2] bootstrap out/soong/.minibootstrap/build.ninja.in</span><br><span class="line">[1/1] out/soong/.bootstrap/bin/minibp out/soong/.bootstrap/build.ninja</span><br><span class="line">[2/3] glob hardware/interfaces/*/Android.bp</span><br><span class="line">[1/1] out/soong/.bootstrap/bin/soong_build out/soong/build.ninja</span><br><span class="line">No need to regenerate ninja file</span><br><span class="line"><span class="meta">[100%</span><span class="bash"> 3/3] out/soong/.bootstrap/bin/soong_build out/soong/build.ninja</span></span><br><span class="line"><span class="meta">[100%</span><span class="bash"> 18/18] build <span class="string">'out/target/product/hon660/obj/SHARED_LIBRARIES/android.hardware.naruto@1.0-impl_intermediates/android.hardware.naruto@1.0-impl.so.toc'</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">### build completed successfully (02:35 (mm:ss))</span></span></span><br></pre></td></tr></table></figure>
+
+<p>没问题 对吧，好了，我们后面还有很多事情要做呢。</p>
+<h4 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a><strong>调用流程</strong></h4><p>上面呢我们完成了实现端的代码和编译，我们这节来看一下整个HIDL的调用流程，因为里面涉及到好几个库，有好多同学都被这些库给搞混了，我们来看看这些库的顺序吧。</p>
+<p>HIDL软件包中自动生成的文件会链接到与软件包同名的单个共享库。该共享库还会导出单个头文件INruto.h，用于在binder客户端和服务端的接口文件，下面的图诠释了我们的INaruto.hal编译后生成的文件走向，从官网拷贝过来的，大家不要在乎文件名哈：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-385176b88e488239.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="treble_cpp_compiler_generated_files.png"></p>
+<ul>
+<li><p><code>**IFoo.h**</code> - 描述 C++ 类中的纯 <code>IFoo</code> 接口；它包含 <code>IFoo.hal</code> 文件中的 <code>IFoo</code> 接口中所定义的方法和类型，必要时会转换为 C++ 类型。<strong>不包含</strong>与用于实现此接口的 RPC 机制（例如 <code>HwBinder</code>）相关的详细信息。类的命名空间包含软件包名称和版本号，例如 <code>::android::hardware::samples::IFoo::V1_0</code>。客户端和服务器都包含此标头：客户端用它来调用方法，服务器用它来实现这些方法。</p>
+</li>
+<li><p><code>**IHwFoo.h**</code> - 头文件，其中包含用于对接口中使用的数据类型进行序列化的函数的声明。开发者不得直接包含其标头（它不包含任何类）。</p>
+</li>
+<li><p><code>**BpFoo.h**</code> - 从 <code>IFoo</code> 继承的类，可描述接口的 <code>HwBinder</code> 代理（客户端）实现。开发者不得直接引用此类。</p>
+</li>
+<li><p><code>**BnFoo.h**</code> - 保存对 <code>IFoo</code> 实现的引用的类，可描述接口的 <code>HwBinder</code> 存根（服务器端）实现。开发者不得直接引用此类。</p>
+</li>
+<li><p><code>**FooAll.cpp**</code> - 包含 <code>HwBinder</code> 代理和 <code>HwBinder</code> 存根的实现的类。当客户端调用接口方法时，代理会自动从客户端封送参数，并将事务发送到绑定内核驱动程序，该内核驱动程序会将事务传送到另一端的存根（该存根随后会调用实际的服务器实现）。</p>
+</li>
+</ul>
+<p>这些文件的结构类似于由 <code>aidl-cpp</code> 生成的文件（有关详细信息，请参见 <a href="https://source.android.com/devices/architecture/hidl/index.html" target="_blank" rel="noopener">HIDL 概览</a>中的“直通模式”）。独立于 HIDL 使用的 RPC 机制的唯一一个自动生成的文件是 <code>IFoo.h</code>，其他所有文件都与 HIDL 使用的 HwBinder RPC 机制相关联。因此，客户端和服务器实现<strong>不得直接引用除 IFoo 之外的任何内容</strong>。为了满足这项要求，请只包含 <code>IFoo.h</code> 并链接到生成的共享库。</p>
+<p>我们这个实例会用到以下几个模块：</p>
+<ul>
+<li><p><a href="mailto:android.hardware.naruto@1.0-impl.so">android.hardware.naruto@1.0-impl.so</a>: Naruto模块实现端的代码编译生成，binder server端</p>
+</li>
+<li><p><a href="mailto:android.hardware.naruto@1.0.so">android.hardware.naruto@1.0.so</a>: Naruto模块调用端的代码，binder client端</p>
+</li>
+<li><p>naruto_hal_service: 通过直通式注册binder service，暴露接口给client调用</p>
+</li>
+<li><p><a href="mailto:android.hardware.naruto@1.0-service.rc">android.hardware.naruto@1.0-service.rc</a>: Android native 进程入口</p>
+</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-bf82ce77f6ab243e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Naruto HAL flow.png"></p>
+<p>大概流程就是这个样子。</p>
+<h4 id="启动binder-server端进程"><a href="#启动binder-server端进程" class="headerlink" title="启动binder server端进程"></a><strong>启动binder server端进程</strong></h4><p>还记得我们之前创建的两个文件吗，我们还没有去实现呢，先来看一下rc文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service naruto_hal_service /vendor/bin/hw/android.hardware.naruto@1.0-service</span><br><span class="line">    class hal</span><br><span class="line">    user system</span><br><span class="line">    group system</span><br></pre></td></tr></table></figure>
+<p>很简单，就是在设备启动的时候执行/vendor/bin/hw/android.hardware.naruto@1.0-service程序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">define</span> LOG_TAG <span class="meta-string">"android.hardware.naruto@1.0-service"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;android/hardware/naruto/1.0/INaruto.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/LegacySupport.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> android::hardware::naruto::V1_0::INaruto;</span><br><span class="line"><span class="keyword">using</span> android::hardware::defaultPassthroughServiceImplementation;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> defaultPassthroughServiceImplementation&lt;INaruto&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个service是注册了INaruto接口文件里面的接口，作为binder server端，很简单就一句话，因为我们使用了passthrough的模式，Android帮我们封装了这个函数，不需要我们自己去addService啦。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cc_binary &#123;</span><br><span class="line">    name: "android.hardware.naruto@1.0-service",</span><br><span class="line">    defaults: ["hidl_defaults"],</span><br><span class="line">    proprietary: true,</span><br><span class="line">    relative_install_path: "hw",</span><br><span class="line">    srcs: ["service.cpp"],</span><br><span class="line">    init_rc: ["android.hardware.naruto@1.0-service.rc"],</span><br><span class="line">    shared_libs: [</span><br><span class="line">        "libhidlbase",</span><br><span class="line">        "libhidltransport",</span><br><span class="line">        "libutils",</span><br><span class="line">        "liblog",</span><br><span class="line">        "android.hardware.naruto@1.0",</span><br><span class="line">        "android.hardware.naruto@1.0-impl",</span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译后可以在, vendor/bin/hw/下找到对应的文件。</p>
+<p>OK，我们server端的进程和实现端共享库已经完成了。</p>
+<p>但是这个时候你如果烧录镜像，会发现这个进程会启动失败，原因是因为我们没有给这个进程配sepolicy，所以正确的做法是要给他加上selinux的权限，我们这里就不去做了，因为我们可以用root权限去手动起这个service。</p>
+<p>好了，接下来要看看client的代码怎么写了。</p>
+<h4 id="HIDL-Client测试代码"><a href="#HIDL-Client测试代码" class="headerlink" title="HIDL Client测试代码"></a><strong>HIDL Client测试代码</strong></h4><p>我写代码喜欢一步一步来，每一步都搞个测试代码来测试，一来是验证每一步的功能，而来呢是为后面测试使用。</p>
+<p>我有个同事，写代码贼快，写完了之后就不知道咋调试了，这种方式不好，不好，大家不要效仿。</p>
+<p>写代码不是一件难事，写好代码是一件不容易的事情，好的代码都是通过大量测试来改善的，没有谁可以一次性的写好代码，所以大家在设计阶段一定要把测试接口留出来，不然的话后面返工去re-design的话，会很没面子，没办法，做我们这一行的，天天都在赶进度，你TMD跟老板说要返工做re-design，老板不剁了你不可。</p>
+<p>好了，贴上我们的测试代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;android/hardware/naruto/1.0/INaruto.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/Status.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/LegacySupport.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;utils/misc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/HidlSupport.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> android::hardware::naruto::V1_0::INaruto;</span><br><span class="line"><span class="keyword">using</span> android::sp;</span><br><span class="line"><span class="keyword">using</span> android::hardware::hidl_string;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret;</span><br><span class="line"></span><br><span class="line">	android::sp&lt;INaruto&gt; service = INaruto::getService();</span><br><span class="line">	<span class="keyword">if</span>(service == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">"Failed to get service\n"</span>);</span><br><span class="line">    	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	service-&gt;helloWorld(<span class="string">"JayZhang"</span>, [&amp;](hidl_string result) &#123;</span><br><span class="line">            	<span class="built_in">printf</span>(<span class="string">"%s\n"</span>, result.c_str());</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码是相当的简单啊，似不似啊，实例化binder service，通过INaruto::getService()，获取到binder server端接接口代理类，然后就可以调用他的方法了，我们这里调用helloWorld接口，然后通过callback获取结果。</p>
+<p>还是为了那些无知的程序员贴上Makefile吧</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line">LOCAL_PROPRIETARY_MODULE := true</span><br><span class="line">LOCAL_MODULE := naruto_test</span><br><span class="line">LOCAL_SRC_FILES := \</span><br><span class="line">    client.cpp \</span><br><span class="line"></span><br><span class="line">LOCAL_SHARED_LIBRARIES := \</span><br><span class="line">   liblog \</span><br><span class="line">   libhidlbase \</span><br><span class="line">   libutils \</span><br><span class="line">   android.hardware.naruto@1.0 \</span><br><span class="line"></span><br><span class="line">include $(BUILD_EXECUTABLE)</span><br></pre></td></tr></table></figure>
+<p>记得在manifest文件里添加vendor接口的定义，不然在client端是没法拿到service的，在相应的manifest.xml里面加入：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">hal</span> <span class="attr">format</span>=<span class="string">"hidl"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>android.hardware.naruto<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">transport</span>&gt;</span>hwbinder<span class="tag">&lt;/<span class="name">transport</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">interface</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>INaruto<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">instance</span>&gt;</span>default<span class="tag">&lt;/<span class="name">instance</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">interface</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">hal</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我们来测试一下代码吧：</p>
+<p>手动运行service：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-eb7856aff32586a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1533565212703.png"></p>
+<p>运行测试代码：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-1b76ec4028b24f65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1533565241175.png"></p>
+<p>看到没有，我们的测试代码传入”JayZhang”字符串，结果输出”Hello World, JayZhang”, 符合我们的预期结果。</p>
+<p>所以本篇就结束喽，吃瓜群众还不赶快码代码，好记性不如烂笔头啊，自己不写一遍怎么记得住。</p>
+<p>这知识简单的如本HIDL的使用，不要着急，后面会有别的知识点，毕竟这只是一个简单的HelloWorld。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -365,59 +380,113 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/15/Android-HIDL-Study-2-Hello-World/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-1-overview/" class="archive-article-date">
-  	<time datetime="2019-12-15T12:59:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2019/12/15/Android-HIDL-Study-3-register-callback/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Android HIDL学习（3） ---- 注册回调
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/15/Android-HIDL-Study-1-overview/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android HIDL学习（1） ----  简介</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-1-overview/">Android HIDL学习（1） ----  简介</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -440,8 +509,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | I&#39;am an Android Developer!</title>
+  <title>Android HIDL学习（1） ----  简介 | I&#39;am an Android Developer!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="I&#39;am an Android Developer!">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;index.html">
+  <meta name="description" content="HIDLHAL接口定义语言（简称HIDL）适用于指定HAL和其用户之间的接口的一种接口描述语言（IDL）。HIDL允许指定类型和方法调用。从更更烦的意义上来说HIDL适用于在独立编程的代码库之间通信的系统。 HIDL旨在用于进程间通信（IPC）。进程之间的通信经过Binder化。对于必须与进程相关联的代码库，还可以使用直通模式。 HIDL可指定数据结构和方法签名，这些内容会整理归类到接口中，而接口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android HIDL学习（1） ----  简介">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;Android-HIDL-Study-1-overview&#x2F;index.html">
 <meta property="og:site_name" content="I&#39;am an Android Developer!">
+<meta property="og:description" content="HIDLHAL接口定义语言（简称HIDL）适用于指定HAL和其用户之间的接口的一种接口描述语言（IDL）。HIDL允许指定类型和方法调用。从更更烦的意义上来说HIDL适用于在独立编程的代码库之间通信的系统。 HIDL旨在用于进程间通信（IPC）。进程之间的通信经过Binder化。对于必须与进程相关联的代码库，还可以使用直通模式。 HIDL可指定数据结构和方法签名，这些内容会整理归类到接口中，而接口">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-709053bed709dab2.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-bbc26fe9a9d7ab6c.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="og:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-ab420eff2bc2d164.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
+<meta property="article:published_time" content="2019-12-15T12:59:57.000Z">
+<meta property="article:modified_time" content="2019-12-15T13:35:55.940Z">
 <meta property="article:author" content="Jay Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;5439660-709053bed709dab2.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;1240">
   
     <link rel="alternative" href="/atom.xml" title="I&#39;am an Android Developer!" type="application/atom+xml">
   
@@ -150,247 +158,72 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Android-HIDL-Study-1-overview" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-6-FMQ/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:15:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-6-FMQ/">Android HIDL学习（6）---Fast Message Queue</a>
+    <h1 class="article-title" itemprop="name">
+      Android HIDL学习（1） ----  简介
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-5-Design/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:13:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-5-Design/">Android HIDL学习（5） ---- 设计要素</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-4-Performance/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-4-Performance/">Android HIDL学习（4） ---- 高性能比较（HIDL, FMQ, MMAP）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-3-register-callback/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:03:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-3-register-callback/">Android HIDL学习（3） ---- 注册回调</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-2-Hello-World/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:02:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-2-Hello-World/">Android HIDL学习（2） ----  HelloWorld</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/15/Android-HIDL-Study-1-overview/" class="archive-article-date">
+        
+        <a href="/2019/12/15/Android-HIDL-Study-1-overview/" class="archive-article-date">
   	<time datetime="2019-12-15T12:59:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-1-overview/">Android HIDL学习（1） ----  简介</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="HIDL"><a href="#HIDL" class="headerlink" title="HIDL"></a><strong>HIDL</strong></h4><p>HAL接口定义语言（简称HIDL）适用于指定HAL和其用户之间的接口的一种接口描述语言（IDL）。HIDL允许指定类型和方法调用。从更更烦的意义上来说HIDL适用于在独立编程的代码库之间通信的系统。</p>
+<p>HIDL旨在用于进程间通信（IPC）。进程之间的通信经过Binder化。对于必须与进程相关联的代码库，还可以使用直通模式。</p>
+<p>HIDL可指定数据结构和方法签名，这些内容会整理归类到接口中，而接口会汇集到软件包中。尽管HIDL具有一系列不同的关键字，C++和JAVA程序员对HIDL的语法并不陌生。此外，HIDL还是用JAVA样式和注释。</p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
-          
+<h4 id="扯淡一下"><a href="#扯淡一下" class="headerlink" title="扯淡一下"></a><strong>扯淡一下</strong></h4><p>好吧，上面这段HIDL的简介是从Android开发者官网抄过来的<a href="https://source.android.com/devices/architecture/hidl/" target="_blank" rel="noopener">https://source.android.com/devices/architecture/hidl/</a>，大家读上去可能会比较别扭，没办法本来英文挺好的，被翻译成中文就是这个鸟样了，我不是说中文不好，我负责Android开发官网中文翻译的肯定是个老外，或者就是Google翻译软件自动翻译的，反正一般人是理解不了的。</p>
+<p>OK，我也不想从官网上去炒一堆文字来忽悠大家，毕竟大家的时间都是很宝贵的，那种垃圾翻译文章就let it go，当然啦，官方的文档固然是好的，但是写的比较粗和简单，人家都是站在一个不知道多高的高度来写的，所以的，我这边会记录Android HIDL开发的一些知识，当然了因为Android 8.0出来也没有多久，网上相关的文档寥寥无几，特别是想我这样子手把手的指导写代码的技术文档啦。</p>
+<h4 id="HIDL设计"><a href="#HIDL设计" class="headerlink" title="HIDL设计"></a><strong>HIDL设计</strong></h4><p>其实HIDL的出现是为了更好的服务于Treble这个项目，不了解Treble的可以先从网上找一下相关的资料，我这里简单做说明。</p>
+<p>严重的碎片化：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-709053bed709dab2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1533385547805.png"></p>
+<p>由于Android的发展比较迅猛，各大手机厂商和芯片厂商都在做，Google当然作为一个领导者在指引我们做出更好的手机操作系统，但是由于版本太多，Android版本的碎片化越来越严重，而且系统的更新又是一个耗时和复杂的过程，Google试图来解决这个问题而引入了Treble，大家都知道做手机的，比如：小米，华为，VIVO等厂商，他们维护自己的BSP，基本上他们的BSP包含几部分：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-bbc26fe9a9d7ab6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1533385203827.png"></p>
+<p>注意，这里的Framework是vendor修改过的，这样子的话，这四部分都耦合在一起，因为Google每次更新Android大版本，基本上都是framework的升级，与vendor改的代码理论上是可以独立开来的，所以Google尝试通过Treble来独立更新system.img来帮助vendor更快的移植新的Android版本。</p>
+<p>以前HAL是以so的形式存在的，作为一堆标准接口，供Android framework调用，无论是通过jni还是别的途径，如果要被framework调用，那这些so就一定要存在于system分区，但是我们现在要把system分区独立开来，这样子，vendor修改的代码全部要在vendor分区，所以，引入了HIDL来解决这个问题，vendor设计的HAL都以独立的service存在，每一个HAL模块都是一个独立的binder server进程，Android framework想用调用HAL的接口就必须作为binder的client来调用，后面会详细描述，这里大家只要记住这个概念就OK。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5439660-ab420eff2bc2d164.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1533385882413.png"></p>
+<h4 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a><strong>结尾</strong></h4><p>介绍了一些简单的概念，后面我们会以一个简单的例子给大家诠释。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -407,17 +240,108 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/15/Android-HIDL-Study-1-overview/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2019/12/15/Android-HIDL-Study-2-Hello-World/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Android HIDL学习（2） ----  HelloWorld
+        
+      </div>
+    </a>
   
   
-    </div></section>
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -440,8 +364,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
