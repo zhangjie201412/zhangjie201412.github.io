@@ -15,14 +15,14 @@
 <meta property="og:site_name" content="我是Android开发者">
 <meta property="og:description" content="想聊聊FMQ的，无意中看到下面这篇文章，写的很好，所以就直接拿来用了，笑纳笑纳~">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;11345863-498c62716de9b781.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;523&#x2F;format&#x2F;webp">
-<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;11345863-80122319d41906e5.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;576&#x2F;format&#x2F;webp">
-<meta property="og:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;11345863-d5c46627a3e160a7.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;888&#x2F;format&#x2F;webp">
+<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;FMQ-1.webp">
+<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;FM1-2.webp">
+<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;FMQ-3.webp">
 <meta property="article:published_time" content="2019-12-15T13:15:57.000Z">
-<meta property="article:modified_time" content="2019-12-15T13:36:55.245Z">
+<meta property="article:modified_time" content="2019-12-16T00:12:55.812Z">
 <meta property="article:author" content="木叶♀HinaTa">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;upload-images.jianshu.io&#x2F;upload_images&#x2F;11345863-498c62716de9b781.png?imageMogr2&#x2F;auto-orient&#x2F;strip%7CimageView2&#x2F;2&#x2F;w&#x2F;523&#x2F;format&#x2F;webp">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;FMQ-1.webp">
   
     <link rel="alternative" href="/atom.xml" title="我是Android开发者" type="application/atom+xml">
   
@@ -313,7 +313,7 @@
 </tbody></table>
 <h2 id="HIDL-Memory-Block"><a href="#HIDL-Memory-Block" class="headerlink" title="HIDL Memory Block"></a>HIDL Memory Block</h2><p>HIDL 内存块是一个建立在HIDL @1.0::IAllocator, 和 HIDL @1.0::IMapper的抽象层。<br>它是为具有多个内存块共享单个内存堆的HIDL Severis而设计的。</p>
 <h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>HIDL内存块体系结构包括多个内存块共享一个内存堆的HIDL services：</p>
-<p><img src="//upload-images.jianshu.io/upload_images/11345863-498c62716de9b781.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/523/format/webp" alt="image"></p>
+<p><img src="http://q2k8089lz.bkt.clouddn.com/FMQ-1.webp" alt="image"></p>
 <h3 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h3><h5 id="声明HAL"><a href="#声明HAL" class="headerlink" title="声明HAL"></a>声明HAL</h5><p>IFoo HAL:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import android.hidl.memory.block@1.0::MemoryBlock;</span><br><span class="line"></span><br><span class="line">interface IFoo &#123;</span><br><span class="line">    getSome() generates(MemoryBlock block);</span><br><span class="line">    giveBack(MemoryBlock block);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -491,14 +491,14 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package android.hardware.samples@1.0;</span><br><span class="line">interface IFoo &#123;</span><br><span class="line">    struct Foo &#123;</span><br><span class="line">       int64_t someValue;</span><br><span class="line">       handle  myHandle;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    someMethod() generates (vec&lt;uint32_t&gt;);</span><br><span class="line">    anotherMethod(Foo foo) generates (int32_t ret);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h4 id="生成的文件"><a href="#生成的文件" class="headerlink" title="生成的文件"></a>生成的文件</h4><p>HIDL 软件包中自动生成的文件会链接到与软件包同名的单个共享库（例如 <a href="mailto:android.hardware.samples@1.0">android.hardware.samples@1.0</a>）。该共享库还会导出单个标头 IFoo.h，用于包含在客户端和服务器中。绑定式模式使用 hidl-gen 编译器并以 IFoo.hal 接口文件作为输入，它具有以下自动生成的文件：</p>
-<p><img src="//upload-images.jianshu.io/upload_images/11345863-80122319d41906e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/576/format/webp" alt="image"></p>
+<p><img src="http://q2k8089lz.bkt.clouddn.com/FM1-2.webp" alt="image"></p>
 <h2 id="链接到共享库"><a href="#链接到共享库" class="headerlink" title="链接到共享库"></a>链接到共享库</h2><p>使用软件包中的任何接口的客户端或服务器必须在下面的其中一 (1) 个位置包含该软件包的共享库：<br>在 Android.mk 中：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_SHARED_LIBRARIES +&#x3D; android.hardware.samples@1.0</span><br></pre></td></tr></table></figure>
 
 <p>在 Android.bp 中：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shared_libs: [</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">    &quot;android.hardware.samples@1.0&quot;,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
 
-<p><img src="//upload-images.jianshu.io/upload_images/11345863-d5c46627a3e160a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/888/format/webp" alt="image"></p>
+<p><img src="http://q2k8089lz.bkt.clouddn.com/FMQ-3.webp" alt="image"></p>
 <h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><p>HIDL 函数和类型（如 Return<T> 和 Void()）已在命名空间 ::android::hardware 中进行声明。软件包的 C++ 命名空间由软件包的名称和版本号确定。例如，hardware/interfaces 下版本为 1.2 的软件包 mypackage 具有以下特质：</p>
 <ul>
 <li>C++ 命名空间是 ::android::hardware::mypackage::V1_2</li>
