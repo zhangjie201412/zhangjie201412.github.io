@@ -6,17 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019/12 | 我是Android开发者</title>
+  <title>Android Input子系统 -- InputManagerService启动 | 我是Android开发者</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="2222">
-<meta property="og:type" content="website">
-<meta property="og:title" content="我是Android开发者">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;2019&#x2F;12&#x2F;index.html">
+  <meta name="description" content="InputManagerService是Android framework中核心service之一，Android framework层涉及的代码也是非常多， 123456789101112131415161718frameworks&#x2F;native&#x2F;services&#x2F;inputflinger&#x2F;  - InputDispatcher.cpp  - InputReader.cpp  - InputMa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Input子系统 -- InputManagerService启动">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;17&#x2F;Android-InputSystem-3-IMS-StartFlow&#x2F;index.html">
 <meta property="og:site_name" content="我是Android开发者">
-<meta property="og:description" content="2222">
+<meta property="og:description" content="InputManagerService是Android framework中核心service之一，Android framework层涉及的代码也是非常多， 123456789101112131415161718frameworks&#x2F;native&#x2F;services&#x2F;inputflinger&#x2F;  - InputDispatcher.cpp  - InputReader.cpp  - InputMa">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;Android%20Input%20%E5%AD%90%E7%B3%BB%E7%BB%9F-%E6%A1%86%E6%9E%B6%20%283%29.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;IMS_Framework.png">
+<meta property="article:published_time" content="2019-12-17T13:25:26.000Z">
+<meta property="article:modified_time" content="2019-12-17T13:29:57.190Z">
 <meta property="article:author" content="木叶♀HinaTa">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;Android%20Input%20%E5%AD%90%E7%B3%BB%E7%BB%9F-%E6%A1%86%E6%9E%B6%20%283%29.png">
   
     <link rel="alternative" href="/atom.xml" title="我是Android开发者" type="application/atom+xml">
   
@@ -156,39 +161,163 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="blog-Android-InputSystem-3-IMS-StartFlow" class="article article-type-blog " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      Android Input子系统 -- InputManagerService启动
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-blog">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
+
+        
+        
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
 
 <a href="/2019/12/17/Android-InputSystem-3-IMS-StartFlow/" class="archive-article-date">
   	<time datetime="2019-12-17T13:25:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-17</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/17/Android-InputSystem-3-IMS-StartFlow/">Android Input子系统 -- InputManagerService启动</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>InputManagerService是Android framework中核心service之一，Android framework层涉及的代码也是非常多，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">frameworks/native/services/inputflinger/</span><br><span class="line">  - InputDispatcher.cpp</span><br><span class="line">  - InputReader.cpp</span><br><span class="line">  - InputManager.cpp</span><br><span class="line">  - EventHub.cpp</span><br><span class="line">  - InputListener.cpp</span><br><span class="line"></span><br><span class="line">frameworks/native/libs/input/</span><br><span class="line">  - InputTransport.cpp</span><br><span class="line">  - Input.cpp</span><br><span class="line">  - InputDevice.cpp</span><br><span class="line">  - <span class="built_in">Keyboard</span>.cpp</span><br><span class="line">  - KeyCharacterMap.cpp</span><br><span class="line">  - IInputFlinger.cpp</span><br><span class="line"></span><br><span class="line">frameworks/base/services/core/</span><br><span class="line">  - java/com/android/server/input/InputManagerService.java</span><br><span class="line">  - jni/com_android_server_input_InputManagerService.cpp</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
-          
+<p><img src="http://q2k8089lz.bkt.clouddn.com/Android%20Input%20%E5%AD%90%E7%B3%BB%E7%BB%9F-%E6%A1%86%E6%9E%B6%20%283%29.png" alt=""></p>
+<p>从简单的分类可以看做是两层：</p>
+<ul>
+<li>Java层，<code>InputManagerService</code>负责对外提供服务，给<code>WindowManagerService</code>提供输入信息的回调</li>
+<li>Native层，监控Linux上报的输入事件，把事件处理成Android的KeyCode，给想要处理的Window发送输入事件</li>
+</ul>
+<p>前面介绍了Linux的输入子系统，可以看到应用层的输入子系统框架都是基于驱动抽象出来的文件系统设备节点的读写来处理的，虽然说起来比较简单，但是在整个复杂的Android操作系统中，把输入事件发送到UI层处理还是非常复杂的一个过程。</p>
+<p>当用户按下按键或者触摸屏幕时，输入系统会取出驱动上报的时间，经过层层封装转换成Android层能识别的<code>KeyEvent</code>或者<code>MotionEvent</code>，最后交付给对应的目标窗口来消费输入事件。</p>
+<p>输入模块的组成：</p>
+<ul>
+<li>Native层的<code>InputReader</code>负责从EventHub取出事件并处理，再交付给<code>InputDispatcher</code>线程</li>
+<li>Native的<code>InputDispatcher</code>线程接收到来自<code>InputReader</code>的输入事件，并记录WMS的窗口信息，用来派发到合适的窗口</li>
+<li>Java层的<code>InputManagerService</code>跟WMS交互，WMS记录窗口信息，同步更新到IMS，为<code>InputDispatcher</code>线程正确派发事件到<code>ViewRootImpl</code>提供保障</li>
+</ul>
+<h4 id="InputManagerService启动过程"><a href="#InputManagerService启动过程" class="headerlink" title="InputManagerService启动过程"></a>InputManagerService启动过程</h4><p>InputManagerService作为system_server中的重要服务，继承与<code>IInputManager.Stub</code>，作为binder的服务端，client位于InputManager的内部通过<code>IInputManagerStub.asInterface()</code>获取binder的代理端，C/S两端通信协议是由<code>IInputManager.aidl</code>来定义。</p>
+<p><img src="http://q2k8089lz.bkt.clouddn.com/IMS_Framework.png" alt=""></p>
+<p>IMS涉及到的重要的类：</p>
+<ul>
+<li><strong><code>InputManagerService</code></strong> - 位于Java层的InputManagerService.java文件<ul>
+<li>其成员变量<code>mPtr</code>指向Native层的<code>NativeInputManager</code>对象</li>
+</ul>
+</li>
+<li><strong><code>NativeInputManager</code></strong> - 位于Native层的com_android_server_input_InputManagerService.cpp文件<ul>
+<li>其成员<code>mServiceObj</code>指向Java层的IMS对象</li>
+<li>其成员<code>mLooper</code>是指”android.display”线程的Looper</li>
+</ul>
+</li>
+<li><strong><code>InputManager</code></strong> - 位于libinputflinger中的InputManager.cpp文件<ul>
+<li><code>InputDispatcher</code>和<code>InputReader</code>的成员变量<code>mPolicy</code>都是指向<code>NativeInputManager</code>对象</li>
+<li><code>InputReader</code>的成员<code>mQueuedListener</code>，数据类型为<code>QueuedInputListener</code>；通过其内部成员变量<code>mInnerListener</code>指向<code>InputDispatcher</code>对象；这就是<code>InputReader</code>跟<code>InputDispatcher</code>交互的中间枢纽。</li>
+</ul>
+</li>
+<li><strong><code>InputDispatcherPolicyInterface</code></strong></li>
+<li><strong><code>InputDispatcher</code></strong></li>
+<li><strong><code>InputDispatcherInterface</code></strong></li>
+<li><strong><code>InputReaderPolicyInterface</code></strong></li>
+<li><strong><code>InputReader</code></strong></li>
+<li><strong><code>InputReaderInterface</code></strong></li>
+<li><strong><code>EventHubInterface</code></strong></li>
+<li><strong><code>EventHub</code></strong></li>
+</ul>
+<h5 id="IMS的启动"><a href="#IMS的启动" class="headerlink" title="IMS的启动"></a>IMS的启动</h5><p>IMS是伴随着system_server进程的启动而启动的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">InputManagerService</span><br><span class="line">	nativeInit</span><br><span class="line">		NativeInputManager</span><br><span class="line">			EventHub</span><br><span class="line">			InputManager</span><br><span class="line">				InputDispatcher</span><br><span class="line">					Looper</span><br><span class="line">				InputReader</span><br><span class="line">					QueueInputListener</span><br><span class="line">				InputReaderThread</span><br><span class="line">				InputDispatcherThread</span><br><span class="line">IMS.start</span><br><span class="line">	nativeStart</span><br><span class="line">		InputManager.start</span><br><span class="line">			InputReaderThread-&gt;run</span><br><span class="line">			InputDispatcherThread-&gt;run</span><br></pre></td></tr></table></figure>
+
+<p>SystemServer.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startOtherServices</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//初始化IMS对象</span></span><br><span class="line">    inputManager = <span class="keyword">new</span> InputManagerService(context);</span><br><span class="line">    ServiceManager.addService(Context.INPUT_SERVICE, inputManager);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//将InputMonitor对象保持到IMS对象</span></span><br><span class="line">    inputManager.setWindowManagerCallbacks(wm.getInputMonitor());</span><br><span class="line">    inputManager.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="IMS初始化"><a href="#IMS初始化" class="headerlink" title="IMS初始化"></a>IMS初始化</h5><p>InputManagerService.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">InputManagerService</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.mContext = context;</span><br><span class="line">   <span class="comment">// 运行在线程"android.display"</span></span><br><span class="line">   <span class="keyword">this</span>.mHandler = <span class="keyword">new</span> InputManagerHandler(DisplayThread.get().getLooper());</span><br><span class="line">   ...</span><br><span class="line">   <span class="comment">//初始化native对象</span></span><br><span class="line">   mPtr = nativeInit(<span class="keyword">this</span>, mContext, mHandler.getLooper().getQueue());</span><br><span class="line">   LocalServices.addService(InputManagerInternal<span class="class">.<span class="keyword">class</span>, <span class="title">new</span> <span class="title">LocalService</span>())</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="nativeInit"><a href="#nativeInit" class="headerlink" title="nativeInit"></a>nativeInit</h5><p>调用到<code>InputManagerService</code>对应的JNI代码com_android_server_input_InputManager.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> jlong <span class="title">nativeInit</span><span class="params">(JNIEnv* env, jclass <span class="comment">/* clazz */</span>, jobject serviceObj, jobject contextObj, jobject messageQueueObj)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//获取native消息队列</span></span><br><span class="line">    sp&lt;MessageQueue&gt; messageQueue = android_os_MessageQueue_getMessageQueue(env, messageQueueObj);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//创建Native的InputManager</span></span><br><span class="line">    NativeInputManager* im = <span class="keyword">new</span> NativeInputManager(contextObj, serviceObj,</span><br><span class="line">            messageQueue-&gt;getLooper());</span><br><span class="line">    im-&gt;incStrong(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;jlong&gt;(im); <span class="comment">//返回Native对象的指针</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样的套路，在<code>nativeInit</code>函数中创建了一个<code>NativeInputManager</code>对象，然后转化为指针保存在一个<code>long</code>类型的变量中传递给java层，这样子java层就可以利用这个指针来调用<code>NativeInputManager</code>对象中的成员方法和变量。</p>
+<h5 id="NativeInputManager"><a href="#NativeInputManager" class="headerlink" title="NativeInputManager"></a>NativeInputManager</h5><p>com_android_server_input_InputManagerService.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NativeInputManager::NativeInputManager(jobject contextObj,</span><br><span class="line">        jobject serviceObj, <span class="keyword">const</span> sp&lt;Looper&gt;&amp; looper) :</span><br><span class="line">        mLooper(looper), mInteractive(<span class="literal">true</span>) &#123;</span><br><span class="line">    JNIEnv* env = jniEnv();</span><br><span class="line">    mContextObj = env-&gt;NewGlobalRef(contextObj); <span class="comment">//上层IMS的context</span></span><br><span class="line">    mServiceObj = env-&gt;NewGlobalRef(serviceObj); <span class="comment">//上层IMS对象</span></span><br><span class="line">    ...</span><br><span class="line">    sp&lt;EventHub&gt; eventHub = <span class="keyword">new</span> EventHub(); <span class="comment">// 创建EventHub对象</span></span><br><span class="line">    mInputManager = <span class="keyword">new</span> InputManager(eventHub, <span class="keyword">this</span>, <span class="keyword">this</span>); <span class="comment">// 创建InputManager对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>mLooper</code>是从IMS的”android.display”线程的Looper对象传递下来的。</p>
+<h5 id="EventHub"><a href="#EventHub" class="headerlink" title="EventHub"></a>EventHub</h5><p>EventHub.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">EventHub::EventHub(<span class="keyword">void</span>) :</span><br><span class="line">        mBuiltInKeyboardId(NO_BUILT_IN_KEYBOARD), mNextDeviceId(<span class="number">1</span>), mControllerNumbers(),</span><br><span class="line">        mOpeningDevices(<span class="number">0</span>), mClosingDevices(<span class="number">0</span>),</span><br><span class="line">        mNeedToSendFinishedDeviceScan(<span class="literal">false</span>),</span><br><span class="line">        mNeedToReopenDevices(<span class="literal">false</span>), mNeedToScanDevices(<span class="literal">true</span>),</span><br><span class="line">        mPendingEventCount(<span class="number">0</span>), mPendingEventIndex(<span class="number">0</span>), mPendingINotify(<span class="literal">false</span>) &#123;</span><br><span class="line">    acquire_wake_lock(PARTIAL_WAKE_LOCK, WAKE_LOCK_ID);</span><br><span class="line">    <span class="comment">//创建epoll</span></span><br><span class="line">    mEpollFd = epoll_create(EPOLL_SIZE_HINT);</span><br><span class="line"></span><br><span class="line">    mINotifyFd = inotify_init();</span><br><span class="line">    <span class="comment">//此处DEVICE_PATH为"/dev/input"，监听该设备路径</span></span><br><span class="line">    <span class="keyword">int</span> result = inotify_add_watch(mINotifyFd, DEVICE_PATH, IN_DELETE | IN_CREATE);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">eventItem</span>;</span></span><br><span class="line">    <span class="built_in">memset</span>(&amp;eventItem, <span class="number">0</span>, <span class="keyword">sizeof</span>(eventItem));</span><br><span class="line">    eventItem.events = EPOLLIN;</span><br><span class="line">    eventItem.data.u32 = EPOLL_ID_INOTIFY;</span><br><span class="line">    <span class="comment">//添加INotify到epoll实例</span></span><br><span class="line">    result = epoll_ctl(mEpollFd, EPOLL_CTL_ADD, mINotifyFd, &amp;eventItem);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> wakeFds[<span class="number">2</span>];</span><br><span class="line">    result = pipe(wakeFds); <span class="comment">//创建管道</span></span><br><span class="line"></span><br><span class="line">    mWakeReadPipeFd = wakeFds[<span class="number">0</span>];</span><br><span class="line">    mWakeWritePipeFd = wakeFds[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将pipe的读和写都设置为非阻塞方式</span></span><br><span class="line">    result = fcntl(mWakeReadPipeFd, F_SETFL, O_NONBLOCK);</span><br><span class="line">    result = fcntl(mWakeWritePipeFd, F_SETFL, O_NONBLOCK);</span><br><span class="line"></span><br><span class="line">    eventItem.data.u32 = EPOLL_ID_WAKE;</span><br><span class="line">    <span class="comment">//添加管道的读端到epoll实例</span></span><br><span class="line">    result = epoll_ctl(mEpollFd, EPOLL_CTL_ADD, mWakeReadPipeFd, &amp;eventItem);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建epoll实例来处理文件IO的多路复用</li>
+<li>初始化INotify，监听/dev/input/目录下的文件，并且添加到epoll中</li>
+<li>创建非阻塞管道文件描述符，添加到epoll中</li>
+</ul>
+<h5 id="InputManager"><a href="#InputManager" class="headerlink" title="InputManager"></a>InputManager</h5><p>InputManager.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">InputManager::InputManager(</span><br><span class="line">        <span class="keyword">const</span> sp&lt;EventHubInterface&gt;&amp; eventHub,</span><br><span class="line">        <span class="keyword">const</span> sp&lt;InputReaderPolicyInterface&gt;&amp; readerPolicy,</span><br><span class="line">        <span class="keyword">const</span> sp&lt;InputDispatcherPolicyInterface&gt;&amp; dispatcherPolicy) &#123;</span><br><span class="line">    <span class="comment">//创建InputDispatcher对象</span></span><br><span class="line">    mDispatcher = <span class="keyword">new</span> InputDispatcher(dispatcherPolicy);</span><br><span class="line">    <span class="comment">//创建InputReader对象</span></span><br><span class="line">    mReader = <span class="keyword">new</span> InputReader(eventHub, readerPolicy, mDispatcher);</span><br><span class="line">    initialize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建了<code>InputDispatcher</code>和<code>InputReader</code>对象，这里的<code>Reader</code>和<code>Dispatcher</code>的构造参数都是从<code>NativeInputManager</code>传递过来的</p>
+<h5 id="InputManager初始化initialize"><a href="#InputManager初始化initialize" class="headerlink" title="InputManager初始化initialize"></a>InputManager初始化initialize</h5><p>InputManager.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> InputManager::initialize() &#123;</span><br><span class="line">    <span class="comment">//创建线程“InputReader”</span></span><br><span class="line">    mReaderThread = <span class="keyword">new</span> InputReaderThread(mReader);</span><br><span class="line">    <span class="comment">//创建线程”InputDispatcher“</span></span><br><span class="line">    mDispatcherThread = <span class="keyword">new</span> InputDispatcherThread(mDispatcher);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">InputReaderThread::InputReaderThread(<span class="keyword">const</span> sp&lt;InputReaderInterface&gt;&amp; reader) :</span><br><span class="line">        Thread(<span class="comment">/*canCallJava*/</span> <span class="literal">true</span>), mReader(reader) &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">InputDispatcherThread::InputDispatcherThread(<span class="keyword">const</span> sp&lt;InputDispatcherInterface&gt;&amp; dispatcher) :</span><br><span class="line">        Thread(<span class="comment">/*canCallJava*/</span> <span class="literal">true</span>), mDispatcher(dispatcher) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建两个可以访问<code>InputManagerService</code>成员变量的native线程</p>
+<ul>
+<li><code>InputReader</code>线程</li>
+<li><code>InputDispatcher</code>线程</li>
+</ul>
+<h5 id="IMS-start"><a href="#IMS-start" class="headerlink" title="IMS.start"></a>IMS.start</h5><p>InputManagerService.java</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 启动native对象</span></span><br><span class="line">    nativeStart(mPtr);</span><br><span class="line">    Watchdog.getInstance().addMonitor(<span class="keyword">this</span>);</span><br><span class="line">    <span class="comment">//注册触摸点速度和是否显示功能的观察者</span></span><br><span class="line">    registerPointerSpeedSettingObserver();</span><br><span class="line">    registerShowTouchesSettingObserver();</span><br><span class="line"></span><br><span class="line">    mContext.registerReceiver(<span class="keyword">new</span> BroadcastReceiver() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="built_in">onReceive</span>(Context context, Intent intent) &#123;</span><br><span class="line">            updatePointerSpeedFromSettings();</span><br><span class="line">            updateShowTouchesFromSettings();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="keyword">new</span> IntentFilter(Intent.ACTION_USER_SWITCHED), null, mHandler);</span><br><span class="line"></span><br><span class="line">    updatePointerSpeedFromSettings(); <span class="comment">//更新触摸点的速度</span></span><br><span class="line">    updateShowTouchesFromSettings(); <span class="comment">//是否在屏幕上显示触摸点</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="nativeStart"><a href="#nativeStart" class="headerlink" title="nativeStart"></a>nativeStart</h5><p>com_android_server_input_InputManagerService.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">nativeStart</span><span class="params">(JNIEnv* env, jclass <span class="comment">/* clazz */</span>, jlong ptr)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//此处ptr记录的便是NativeInputManager</span></span><br><span class="line">    NativeInputManager* im = <span class="keyword">reinterpret_cast</span>&lt;NativeInputManager*&gt;(ptr);</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="keyword">status_t</span> result = im-&gt;getInputManager()-&gt;start();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="InputManager-start"><a href="#InputManager-start" class="headerlink" title="InputManager.start"></a>InputManager.start</h5><p>InputManager.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">status_t</span> InputManager::start() &#123;</span><br><span class="line">    result = mDispatcherThread-&gt;<span class="built_in">run</span>(<span class="string">"InputDispatcher"</span>, PRIORITY_URGENT_DISPLAY);</span><br><span class="line">    result = mReaderThread-&gt;<span class="built_in">run</span>(<span class="string">"InputReader"</span>, PRIORITY_URGENT_DISPLAY);</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动两个线程：</p>
+<ul>
+<li>InputReader</li>
+<li>InputDispatcher</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Reads raw events from the event hub and processes them, endlessly. */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InputReaderThread</span> :</span> <span class="keyword">public</span> Thread &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">InputReaderThread</span><span class="params">(<span class="keyword">const</span> sp&lt;InputReaderInterface&gt;&amp; reader)</span></span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~InputReaderThread();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    sp&lt;InputReaderInterface&gt; mReader;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">threadLoop</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>InputReaderThread</code>和<code>InputDispatcherThread</code>都是集成了Android::Thread，实现了<code>threadLoop()</code>接口实现线程的实体。</p>
+<p>下面来详细分析一下Android的EventHub。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>您的赞赏是对我最大的肯定<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -205,416 +334,116 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/17/Android-InputSystem-3-IMS-StartFlow/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-blog">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
 
-<a href="/2019/12/17/Android-InputSystem-2-LinuxKernel/" class="archive-article-date">
-  	<time datetime="2019-12-17T12:58:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-17</time>
-</a>
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/17/Android-InputSystem-2-LinuxKernel/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android Input子系统 -- Linux</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/17/Android-InputSystem-2-LinuxKernel/">Android Input子系统 -- Linux</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/Input子系统//" class="article-tag-list-link color4">Input子系统</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#InputManagerService启动过程"><span class="toc-number">1.</span> <span class="toc-text">InputManagerService启动过程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#IMS的启动"><span class="toc-number">1.1.</span> <span class="toc-text">IMS的启动</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#IMS初始化"><span class="toc-number">1.2.</span> <span class="toc-text">IMS初始化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nativeInit"><span class="toc-number">1.3.</span> <span class="toc-text">nativeInit</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#NativeInputManager"><span class="toc-number">1.4.</span> <span class="toc-text">NativeInputManager</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#EventHub"><span class="toc-number">1.5.</span> <span class="toc-text">EventHub</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#InputManager"><span class="toc-number">1.6.</span> <span class="toc-text">InputManager</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#InputManager初始化initialize"><span class="toc-number">1.7.</span> <span class="toc-text">InputManager初始化initialize</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#IMS-start"><span class="toc-number">1.8.</span> <span class="toc-text">IMS.start</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nativeStart"><span class="toc-number">1.9.</span> <span class="toc-text">nativeStart</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#InputManager-start"><span class="toc-number">1.10.</span> <span class="toc-text">InputManager.start</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-blog">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2019/12/17/Android-InputSystem-1-Overview/" class="archive-article-date">
-  	<time datetime="2019-12-17T00:26:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/17/Android-InputSystem-1-Overview/">Android Input子系统开篇</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/Input子系统//" class="article-tag-list-link color4">Input子系统</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-blog">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
 
-<a href="/2019/12/16/Android-ION-2-sample/" class="archive-article-date">
-  	<time datetime="2019-12-16T13:42:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/16/Android-ION-2-sample/">Android ION内存管理(2) -- 共享内存使用</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/ION内存管理//" class="article-tag-list-link color3">ION内存管理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-blog">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2019/12/16/Android-ION-1-Overview/" class="archive-article-date">
-  	<time datetime="2019-12-16T03:14:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/16/Android-ION-1-Overview/">Android ION 内存管理</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/ION内存管理//" class="article-tag-list-link color3">ION内存管理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2019/12/15/Android-HIDL-Study-6-FMQ/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:15:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-6-FMQ/">Android HIDL学习（6）---Fast Message Queue</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2019/12/15/Android-HIDL-Study-5-Design/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:13:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-5-Design/">Android HIDL学习（5） ---- 设计要素</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2019/12/15/Android-HIDL-Study-4-Performance/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-4-Performance/">Android HIDL学习（4） ---- 高性能比较（HIDL, FMQ, MMAP）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2019/12/15/Android-HIDL-Study-3-register-callback/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:03:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-3-register-callback/">Android HIDL学习（3） ---- 注册回调</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2019/12/15/Android-HIDL-Study-2-Hello-World/" class="archive-article-date">
-  	<time datetime="2019-12-15T13:02:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/15/Android-HIDL-Study-2-Hello-World/">Android HIDL学习（2） ----  HelloWorld</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2019/12/page/2/">2</a><a class="extend next" rel="next" href="/archives/2019/12/page/2/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -651,8 +480,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -158,6 +158,168 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="blog-Android-InputSystem-3-IMS-StartFlow" class="article article-type-blog  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/17/Android-InputSystem-3-IMS-StartFlow/">Android Input子系统 -- InputManagerService启动</a>
+    </h1>
+  
+
+        
+        
+
+<a href="/2019/12/17/Android-InputSystem-3-IMS-StartFlow/" class="archive-article-date">
+  	<time datetime="2019-12-17T13:25:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>InputManagerService是Android framework中核心service之一，Android framework层涉及的代码也是非常多，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">frameworks/native/services/inputflinger/</span><br><span class="line">  - InputDispatcher.cpp</span><br><span class="line">  - InputReader.cpp</span><br><span class="line">  - InputManager.cpp</span><br><span class="line">  - EventHub.cpp</span><br><span class="line">  - InputListener.cpp</span><br><span class="line"></span><br><span class="line">frameworks/native/libs/input/</span><br><span class="line">  - InputTransport.cpp</span><br><span class="line">  - Input.cpp</span><br><span class="line">  - InputDevice.cpp</span><br><span class="line">  - <span class="built_in">Keyboard</span>.cpp</span><br><span class="line">  - KeyCharacterMap.cpp</span><br><span class="line">  - IInputFlinger.cpp</span><br><span class="line"></span><br><span class="line">frameworks/base/services/core/</span><br><span class="line">  - java/com/android/server/input/InputManagerService.java</span><br><span class="line">  - jni/com_android_server_input_InputManagerService.cpp</span><br></pre></td></tr></table></figure>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android/Input子系统//" class="article-tag-list-link color4">Input子系统</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/17/Android-InputSystem-3-IMS-StartFlow/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="blog-Android-InputSystem-2-LinuxKernel" class="article article-type-blog  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/17/Android-InputSystem-2-LinuxKernel/">Android Input子系统 -- Linux</a>
+    </h1>
+  
+
+        
+        
+
+<a href="/2019/12/17/Android-InputSystem-2-LinuxKernel/" class="archive-article-date">
+  	<time datetime="2019-12-17T12:58:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>上一节有展示Android Input子系统的架构图，这里我们关心Linux kernel层</p>
+<p><img src="http://q2k8089lz.bkt.clouddn.com/Android%20Input%20%E5%AD%90%E7%B3%BB%E7%BB%9F-%E6%A1%86%E6%9E%B6%20%282%29.png" alt=""></p>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android/Input子系统//" class="article-tag-list-link color4">Input子系统</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/17/Android-InputSystem-2-LinuxKernel/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="blog-Android-InputSystem-1-Overview" class="article article-type-blog  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -811,88 +973,10 @@
 
 
   
-    <article id="post-Android-HIDL-Study-1-overview" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/15/Android-HIDL-Study-1-overview/">Android HIDL学习（1） ----  简介</a>
-    </h1>
-  
-
-        
-        
-
-<a href="/2019/12/15/Android-HIDL-Study-1-overview/" class="archive-article-date">
-  	<time datetime="2019-12-15T12:59:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="HIDL"><a href="#HIDL" class="headerlink" title="HIDL"></a><strong>HIDL</strong></h4><p>HAL接口定义语言（简称HIDL）适用于指定HAL和其用户之间的接口的一种接口描述语言（IDL）。HIDL允许指定类型和方法调用。从更更烦的意义上来说HIDL适用于在独立编程的代码库之间通信的系统。</p>
-<p>HIDL旨在用于进程间通信（IPC）。进程之间的通信经过Binder化。对于必须与进程相关联的代码库，还可以使用直通模式。</p>
-<p>HIDL可指定数据结构和方法签名，这些内容会整理归类到接口中，而接口会汇集到软件包中。尽管HIDL具有一系列不同的关键字，C++和JAVA程序员对HIDL的语法并不陌生。此外，HIDL还是用JAVA样式和注释。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android/HIDL//" class="article-tag-list-link color5">HIDL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/15/Android-HIDL-Study-1-overview/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    </nav>
   
 
 
