@@ -6,19 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>文章分类 | 我是Android开发者</title>
+  <title>Android Input子系统 -- EventHub | 我是Android开发者</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="2222">
-<meta property="og:type" content="website">
-<meta property="og:title" content="文章分类">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;categories&#x2F;index.html">
+  <meta name="description" content="前言前面其实也有提到EventHub的构造函数，里面就是创建epoll实例，然后把一些事件触发的文件描述符加入到epoll里面统一管理。  监控&#x2F;dev&#x2F;input&#x2F;目录的iNotify文件mINotifyFd 接收Kernel驱动事件(&#x2F;dev&#x2F;input&#x2F;eventX)的文件描述符 用来唤醒InputReader线程的管道读文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Input子系统 -- EventHub">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;Android-InputSystem-4-EventHub&#x2F;index.html">
 <meta property="og:site_name" content="我是Android开发者">
-<meta property="og:description" content="2222">
+<meta property="og:description" content="前言前面其实也有提到EventHub的构造函数，里面就是创建epoll实例，然后把一些事件触发的文件描述符加入到epoll里面统一管理。  监控&#x2F;dev&#x2F;input&#x2F;目录的iNotify文件mINotifyFd 接收Kernel驱动事件(&#x2F;dev&#x2F;input&#x2F;eventX)的文件描述符 用来唤醒InputReader线程的管道读文件">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-12-15T13:27:10.000Z">
-<meta property="article:modified_time" content="2019-12-15T13:28:26.505Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;EventHub.png">
+<meta property="article:published_time" content="2019-12-18T02:49:07.000Z">
+<meta property="article:modified_time" content="2019-12-18T07:44:21.513Z">
 <meta property="article:author" content="木叶♀HinaTa">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;EventHub.png">
   
     <link rel="alternative" href="/atom.xml" title="我是Android开发者" type="application/atom+xml">
   
@@ -158,20 +160,302 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article class="article article-type-post show">
-  <header class="article-header" style="border-bottom: 1px solid #ccc">
-  <h1 class="article-title" itemprop="name">
-    文章分类
-  </h1>
-  </header>
+            <article id="blog-Android-InputSystem-4-EventHub" class="article article-type-blog " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Input子系统 -- EventHub
+    </h1>
+  
+
+        
+        
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+
+<a href="/2019/12/18/Android-InputSystem-4-EventHub/" class="archive-article-date">
+  	<time datetime="2019-12-18T02:49:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>前面其实也有提到EventHub的构造函数，里面就是创建epoll实例，然后把一些事件触发的文件描述符加入到epoll里面统一管理。</p>
+<ul>
+<li>监控<code>/dev/input/</code>目录的iNotify文件mINotifyFd</li>
+<li>接收Kernel驱动事件(<code>/dev/input/eventX</code>)的文件描述符</li>
+<li>用来唤醒<code>InputReader</code>线程的管道读文件<a id="more"></a>
+
+</li>
+</ul>
+<p><img src="http://q2k8089lz.bkt.clouddn.com/EventHub.png" alt=""></p>
+<p><code>EventHub</code>是服务于<code>InputReader</code>线程的，前面在InputRead的构造函数里面有创建EventHub的实例。</p>
+<h5 id="InputReader线程"><a href="#InputReader线程" class="headerlink" title="InputReader线程"></a>InputReader线程</h5><p><code>InputReader</code>线程主要就是查看<code>threadLoop</code>接口中代码的实现，<code>threadLoop</code>返回值是true代表的是会不断的循环，返回false的话就不会继续在调用<code>threadLoop</code>函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> InputReaderThread::threadLoop() &#123;</span><br><span class="line">    mReader-&gt;loopOnce();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不停的调用<code>InputReader</code>的<code>loopOnce</code>函数</p>
+<h5 id="loopOnce函数"><a href="#loopOnce函数" class="headerlink" title="loopOnce函数"></a>loopOnce函数</h5><p>InputReader.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> InputReader::loopOnce() &#123;</span><br><span class="line">    ...</span><br><span class="line">    &#123;</span><br><span class="line">        AutoMutex _l(mLock);</span><br><span class="line">        <span class="keyword">uint32_t</span> changes = mConfigurationChangesToRefresh;</span><br><span class="line">        <span class="keyword">if</span> (changes) &#123;</span><br><span class="line">            timeoutMillis = <span class="number">0</span>;</span><br><span class="line">            ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mNextTimeout != LLONG_MAX) &#123;</span><br><span class="line">            <span class="keyword">nsecs_t</span> now = systemTime(SYSTEM_TIME_MONOTONIC);</span><br><span class="line">            timeoutMillis = toMillisecondTimeoutDelay(now, mNextTimeout);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//从EventHub读取事件，其中EVENT_BUFFER_SIZE = 256</span></span><br><span class="line">    <span class="keyword">size_t</span> count = mEventHub-&gt;getEvents(timeoutMillis, mEventBuffer, EVENT_BUFFER_SIZE);</span><br><span class="line"></span><br><span class="line">    &#123; <span class="comment">// acquire lock</span></span><br><span class="line">        AutoMutex _l(mLock);</span><br><span class="line">         mReaderIsAliveCondition.broadcast();</span><br><span class="line">        <span class="keyword">if</span> (count) &#123; <span class="comment">//处理事件</span></span><br><span class="line">            processEventsLocked(mEventBuffer, count);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (oldGeneration != mGeneration) &#123;</span><br><span class="line">            inputDevicesChanged = <span class="literal">true</span>;</span><br><span class="line">            getInputDevicesLocked(inputDevices);</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125; <span class="comment">// release lock</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (inputDevicesChanged) &#123; <span class="comment">//输入设备发生改变</span></span><br><span class="line">        mPolicy-&gt;notifyInputDevicesChanged(inputDevices);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送事件到nputDispatcher</span></span><br><span class="line">    mQueuedListener-&gt;<span class="built_in">flush</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两个关键的地方，从注释可以很明确的看出来，首先是获取到底层的input事件，处理事件，然后发送到<code>InputDispatcher</code>线程</p>
+<ul>
+<li><code>mEventHub-&gt;getEvents</code></li>
+<li><code>processEventsLocked(mEventBuffer, count)</code></li>
+<li><code>mQueuedListener-&gt;flush</code></li>
+</ul>
+<h5 id="EventHub-gt-getEvents"><a href="#EventHub-gt-getEvents" class="headerlink" title="EventHub-&gt;getEvents"></a>EventHub-&gt;getEvents</h5><p>EventHub.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> EventHub::getEvents(<span class="keyword">int</span> timeoutMillis, RawEvent* <span class="built_in">buffer</span>, <span class="keyword">size_t</span> bufferSize) &#123;</span><br><span class="line">    AutoMutex _l(mLock); <span class="comment">//加锁</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> <span class="title">readBuffer</span>[<span class="title">bufferSize</span>];</span></span><br><span class="line">    RawEvent* event = <span class="built_in">buffer</span>; <span class="comment">//原始事件</span></span><br><span class="line">    <span class="keyword">size_t</span> capacity = bufferSize; <span class="comment">//容量大小为256</span></span><br><span class="line">    <span class="keyword">bool</span> awoken = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        <span class="keyword">nsecs_t</span> now = systemTime(SYSTEM_TIME_MONOTONIC);</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mNeedToScanDevices) &#123;</span><br><span class="line">            mNeedToScanDevices = <span class="literal">false</span>;</span><br><span class="line">            scanDevicesLocked(); <span class="comment">//扫描设备</span></span><br><span class="line">            mNeedToSendFinishedDeviceScan = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (mOpeningDevices != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            Device* device = mOpeningDevices;</span><br><span class="line">            mOpeningDevices = device-&gt;next;</span><br><span class="line">            event-&gt;when = now;</span><br><span class="line">            event-&gt;deviceId = device-&gt;id == mBuiltInKeyboardId ? <span class="number">0</span> : device-&gt;id;</span><br><span class="line">            event-&gt;type = DEVICE_ADDED; <span class="comment">//添加设备的事件</span></span><br><span class="line">            event += <span class="number">1</span>;</span><br><span class="line">            mNeedToSendFinishedDeviceScan = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (--capacity == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        <span class="keyword">bool</span> deviceChanged = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">while</span> (mPendingEventIndex &lt; mPendingEventCount) &#123;</span><br><span class="line">            <span class="comment">//从mPendingEventItems读取事件项</span></span><br><span class="line">            <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span>&amp; <span class="title">eventItem</span> = <span class="title">mPendingEventItems</span>[<span class="title">mPendingEventIndex</span>++];</span></span><br><span class="line">            ...</span><br><span class="line">            <span class="comment">//获取设备ID所对应的device</span></span><br><span class="line">            <span class="keyword">ssize_t</span> deviceIndex = mDevices.indexOfKey(eventItem.data.u32);</span><br><span class="line">            Device* device = mDevices.valueAt(deviceIndex);</span><br><span class="line">            <span class="keyword">if</span> (eventItem.events &amp; EPOLLIN) &#123;</span><br><span class="line">                <span class="comment">//从设备不断读取事件，放入到readBuffer</span></span><br><span class="line">                <span class="keyword">int32_t</span> readSize = <span class="built_in">read</span>(device-&gt;fd, readBuffer,</span><br><span class="line">                        <span class="keyword">sizeof</span>(struct input_event) * capacity);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (readSize == <span class="number">0</span> || (readSize &lt; <span class="number">0</span> &amp;&amp; errno == ENODEV)) &#123;</span><br><span class="line">                    deviceChanged = <span class="literal">true</span>;</span><br><span class="line">                    closeDeviceLocked(device);<span class="comment">//设备已被移除则执行关闭操作</span></span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (readSize &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                    ...</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((readSize % <span class="keyword">sizeof</span>(struct input_event)) != <span class="number">0</span>) &#123;</span><br><span class="line">                    ...</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">int32_t</span> deviceId = device-&gt;id == mBuiltInKeyboardId ? <span class="number">0</span> : device-&gt;id;</span><br><span class="line">                    <span class="keyword">size_t</span> count = <span class="keyword">size_t</span>(readSize) / <span class="keyword">sizeof</span>(struct input_event);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">                        <span class="comment">//获取readBuffer的数据</span></span><br><span class="line">                        <span class="class"><span class="keyword">struct</span> <span class="title">input_event</span>&amp; <span class="title">iev</span> = <span class="title">readBuffer</span>[<span class="title">i</span>];</span></span><br><span class="line">                        <span class="comment">//将input_event信息, 封装成RawEvent</span></span><br><span class="line">                        event-&gt;when = <span class="keyword">nsecs_t</span>(iev.time.tv_sec) * <span class="number">1000000000L</span>L</span><br><span class="line">                                + <span class="keyword">nsecs_t</span>(iev.time.tv_usec) * <span class="number">1000L</span>L;</span><br><span class="line">                        event-&gt;deviceId = deviceId;</span><br><span class="line">                        event-&gt;type = iev.type;</span><br><span class="line">                        event-&gt;code = iev.code;</span><br><span class="line">                        event-&gt;value = iev.value;</span><br><span class="line">                        event += <span class="number">1</span>;</span><br><span class="line">                        capacity -= <span class="number">1</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (capacity == <span class="number">0</span>) &#123;</span><br><span class="line">                        mPendingEventIndex -= <span class="number">1</span>;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">        mLock.unlock(); <span class="comment">//poll之前先释放锁</span></span><br><span class="line">        <span class="comment">//等待input事件的到来</span></span><br><span class="line">        <span class="keyword">int</span> pollResult = epoll_wait(mEpollFd, mPendingEventItems, EPOLL_MAX_EVENTS, timeoutMillis);</span><br><span class="line">        ...</span><br><span class="line">        mLock.lock(); <span class="comment">//poll之后再次请求锁</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (pollResult &lt; <span class="number">0</span>) &#123; <span class="comment">//出现错误</span></span><br><span class="line">            mPendingEventCount = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (errno != EINTR) &#123;</span><br><span class="line">                usleep(<span class="number">100000</span>); <span class="comment">//系统发生错误则休眠1s</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mPendingEventCount = <span class="keyword">size_t</span>(pollResult);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> event - <span class="built_in">buffer</span>; <span class="comment">//返回所读取的事件个数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>虽然精简了代码还是比较长，主要是以下几点：</p>
+<ul>
+<li>EventHub是采用了INotify和epoll机制监听目录<code>/dev/input</code>下设备节点，当有IO事件，会通过epoll_wait返回事件的详细信息</li>
+<li>当epoll_wait被返回有IO数据的时候，通过read函数读取input事件的数据</li>
+<li>把input_event结构体转化为RawEvent事件</li>
+</ul>
+<p>InputEventReader.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> &#123;</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">time</span>;</span> <span class="comment">//事件发生的时间点</span></span><br><span class="line"> __u16 type;</span><br><span class="line"> __u16 code;</span><br><span class="line"> __s32 value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">RawEvent</span> &#123;</span></span><br><span class="line">    <span class="keyword">nsecs_t</span> when; <span class="comment">//事件发生的时间店</span></span><br><span class="line">    <span class="keyword">int32_t</span> deviceId; <span class="comment">//产生事件的设备Id</span></span><br><span class="line">    <span class="keyword">int32_t</span> type; <span class="comment">// 事件类型</span></span><br><span class="line">    <span class="keyword">int32_t</span> code;</span><br><span class="line">    <span class="keyword">int32_t</span> value;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>事件类型：</p>
+<ol>
+<li>DEVICE_ADD</li>
+<li>DEVICE_REMOVED</li>
+<li>FINISHED_DEVICE_SCAN</li>
+<li>type<FIRST_SYNTHETIC_EVENT></li>
+</ol>
+<h5 id="InputReader-gt-processEventsLocked"><a href="#InputReader-gt-processEventsLocked" class="headerlink" title="InputReader-&gt;processEventsLocked"></a>InputReader-&gt;processEventsLocked</h5><p>InputReader.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> InputReader::processEventsLocked(<span class="keyword">const</span> RawEvent* rawEvents, <span class="keyword">size_t</span> count) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> RawEvent* rawEvent = rawEvents; count;) &#123;</span><br><span class="line">        <span class="keyword">int32_t</span> type = rawEvent-&gt;type;</span><br><span class="line">        <span class="keyword">size_t</span> batchSize = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (type &lt; EventHubInterface::FIRST_SYNTHETIC_EVENT) &#123;</span><br><span class="line">            <span class="keyword">int32_t</span> deviceId = rawEvent-&gt;deviceId;</span><br><span class="line">            <span class="keyword">while</span> (batchSize &lt; count) &#123;</span><br><span class="line">                <span class="keyword">if</span> (rawEvent[batchSize].type &gt;= EventHubInterface::FIRST_SYNTHETIC_EVENT</span><br><span class="line">                        || rawEvent[batchSize].deviceId != deviceId) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                batchSize += <span class="number">1</span>; <span class="comment">//同一设备的事件打包处理</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//数据事件的处理</span></span><br><span class="line">            processEventsForDeviceLocked(deviceId, rawEvent, batchSize);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (rawEvent-&gt;type) &#123;</span><br><span class="line">            <span class="keyword">case</span> EventHubInterface::DEVICE_ADDED:</span><br><span class="line">                <span class="comment">//设备添加</span></span><br><span class="line">                addDeviceLocked(rawEvent-&gt;when, rawEvent-&gt;deviceId);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> EventHubInterface::DEVICE_REMOVED:</span><br><span class="line">                <span class="comment">//设备移除</span></span><br><span class="line">                removeDeviceLocked(rawEvent-&gt;when, rawEvent-&gt;deviceId);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> EventHubInterface::FINISHED_DEVICE_SCAN:</span><br><span class="line">                <span class="comment">//设备扫描完成</span></span><br><span class="line">                handleConfigurationChangedLocked(rawEvent-&gt;when);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                ALOG_ASSERT(<span class="literal">false</span>);<span class="comment">//不会发生</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        count -= batchSize;</span><br><span class="line">        rawEvent += batchSize;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要是根据不同的事件类型做不同的处理，我们比较关注对数据的处理，主要是看这个函数<code>processEventsForDeviceLocked</code></p>
+<h5 id="事件处理-processEventsForDeviceLocked"><a href="#事件处理-processEventsForDeviceLocked" class="headerlink" title="事件处理 processEventsForDeviceLocked"></a>事件处理 processEventsForDeviceLocked</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> InputReader::processEventsForDeviceLocked(<span class="keyword">int32_t</span> deviceId,</span><br><span class="line">        <span class="keyword">const</span> RawEvent* rawEvents, <span class="keyword">size_t</span> count) &#123;</span><br><span class="line">    <span class="keyword">ssize_t</span> deviceIndex = mDevices.indexOfKey(deviceId);</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    InputDevice* device = mDevices.valueAt(deviceIndex);</span><br><span class="line">    <span class="keyword">if</span> (device-&gt;isIgnored()) &#123;</span><br><span class="line">        <span class="keyword">return</span>; <span class="comment">//可忽略则直接返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//调用对应设备的process函数</span></span><br><span class="line">    device-&gt;<span class="built_in">process</span>(rawEvents, count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>deviceId</code>来获取合适的<code>InputDevice</code>，<code>InputDevice</code>是当检测到<code>/dev/input/</code>下有设备节点添加的时候创建的</p>
+<p>调用对应的<code>device</code>的process函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> InputDevice::<span class="built_in">process</span>(<span class="keyword">const</span> RawEvent* rawEvents, <span class="keyword">size_t</span> count) &#123;</span><br><span class="line">    <span class="keyword">size_t</span> numMappers = mMappers.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> RawEvent* rawEvent = rawEvents; count--; rawEvent++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mDropUntilNextSync) &#123;</span><br><span class="line">            <span class="keyword">if</span> (rawEvent-&gt;type == EV_SYN &amp;&amp; rawEvent-&gt;code == SYN_REPORT) &#123;</span><br><span class="line">                mDropUntilNextSync = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rawEvent-&gt;type == EV_SYN &amp;&amp; rawEvent-&gt;code == SYN_DROPPED) &#123;</span><br><span class="line">            mDropUntilNextSync = <span class="literal">true</span>;</span><br><span class="line">            reset(rawEvent-&gt;when);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; numMappers; i++) &#123;</span><br><span class="line">                InputMapper* mapper = mMappers[i];</span><br><span class="line">                <span class="comment">//调用具体mapper来处理</span></span><br><span class="line">                mapper-&gt;<span class="built_in">process</span>(rawEvent);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里处理输入事件主要是把Linux下发送过来的RawEvent转化为Android 的Key Event和Key Code，在Android中不同的输入设备对应不同的Key Layout文件，这里就是选择对应的kl文件来处理。</p>
+<p>下面专门针对按键的事件处理跟一下流程。</p>
+<h5 id="按键事件处理流程"><a href="#按键事件处理流程" class="headerlink" title="按键事件处理流程"></a>按键事件处理流程</h5><p>InputReader.cpp</p>
+<p>KeyBoardInputMapper-&gt;process</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> KeyboardInputMapper::<span class="built_in">process</span>(<span class="keyword">const</span> RawEvent* rawEvent) &#123;</span><br><span class="line">    <span class="keyword">switch</span> (rawEvent-&gt;type) &#123;</span><br><span class="line">    <span class="keyword">case</span> EV_KEY: &#123;</span><br><span class="line">        <span class="keyword">int32_t</span> scanCode = rawEvent-&gt;code;</span><br><span class="line">        <span class="keyword">int32_t</span> usageCode = mCurrentHidUsage;</span><br><span class="line">        mCurrentHidUsage = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isKeyboardOrGamepadKey(scanCode)) &#123;</span><br><span class="line">            <span class="keyword">int32_t</span> keyCode;</span><br><span class="line">            <span class="comment">//获取所对应的KeyCode</span></span><br><span class="line">            <span class="keyword">if</span> (getEventHub()-&gt;mapKey(getDeviceId(), scanCode, usageCode, &amp;keyCode, &amp;flags)) &#123;</span><br><span class="line">                keyCode = AKEYCODE_UNKNOWN;</span><br><span class="line">                flags = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//</span></span><br><span class="line">            processKey(rawEvent-&gt;when, rawEvent-&gt;value != <span class="number">0</span>, keyCode, scanCode, flags);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> EV_MSC: ...</span><br><span class="line">    <span class="keyword">case</span> EV_SYN: ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过mapKey函数获取对应scanCode的Android Key Code</p>
+<p>EventHub.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">status_t</span> EventHub::mapKey(<span class="keyword">int32_t</span> deviceId,</span><br><span class="line">        <span class="keyword">int32_t</span> scanCode, <span class="keyword">int32_t</span> usageCode, <span class="keyword">int32_t</span> metaState,</span><br><span class="line">        <span class="keyword">int32_t</span>* outKeycode, <span class="keyword">int32_t</span>* outMetaState, <span class="keyword">uint32_t</span>* outFlags) <span class="keyword">const</span> &#123;</span><br><span class="line">    AutoMutex _l(mLock);</span><br><span class="line">    Device* device = getDeviceLocked(deviceId); <span class="comment">//获取设备对象</span></span><br><span class="line">    <span class="keyword">status_t</span> status = NAME_NOT_FOUND;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (device) &#123;</span><br><span class="line">        sp&lt;KeyCharacterMap&gt; kcm = device-&gt;getKeyCharacterMap();</span><br><span class="line">        <span class="keyword">if</span> (kcm != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="comment">//根据scanCode找到keyCode</span></span><br><span class="line">            <span class="keyword">if</span> (!kcm-&gt;mapKey(scanCode, usageCode, outKeycode)) &#123;</span><br><span class="line">                *outFlags = <span class="number">0</span>;</span><br><span class="line">                status = NO_ERROR;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>真正干活做转换的是<code>KeyCharacterMap::mapKey</code>函数。</p>
+<p>InputReader.cpp</p>
+<p>InputMapper-&gt;processKey</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> KeyboardInputMapper::processKey(<span class="keyword">nsecs_t</span> when, <span class="keyword">bool</span> down, <span class="keyword">int32_t</span> keyCode,</span><br><span class="line">        <span class="keyword">int32_t</span> scanCode, <span class="keyword">uint32_t</span> policyFlags) &#123;</span><br><span class="line">    <span class="keyword">if</span> (down) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mParameters.orientationAware &amp;&amp; mParameters.hasAssociatedDisplay) &#123;</span><br><span class="line">            keyCode = rotateKeyCode(keyCode, mOrientation);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">ssize_t</span> keyDownIndex = findKeyDown(scanCode);</span><br><span class="line">        <span class="keyword">if</span> (keyDownIndex &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//mKeyDowns记录着所有按下的键</span></span><br><span class="line">            keyCode = mKeyDowns.itemAt(keyDownIndex).keyCode;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ...</span><br><span class="line">            mKeyDowns.push(); <span class="comment">//压入栈顶</span></span><br><span class="line">            KeyDown&amp; keyDown = mKeyDowns.editTop();</span><br><span class="line">            keyDown.keyCode = keyCode;</span><br><span class="line">            keyDown.scanCode = scanCode;</span><br><span class="line">        &#125;</span><br><span class="line">        mDownTime = when; <span class="comment">//记录按下时间点</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">ssize_t</span> keyDownIndex = findKeyDown(scanCode);</span><br><span class="line">        <span class="keyword">if</span> (keyDownIndex &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//键抬起操作，则移除按下事件</span></span><br><span class="line">            keyCode = mKeyDowns.itemAt(keyDownIndex).keyCode;</span><br><span class="line">            mKeyDowns.removeAt(<span class="keyword">size_t</span>(keyDownIndex));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span>;  <span class="comment">//键盘没有按下操作，则直接忽略抬起操作</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">nsecs_t</span> downTime = mDownTime;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建NotifyKeyArgs对象, when记录eventTime, downTime记录按下时间；</span></span><br><span class="line">    <span class="function">NotifyKeyArgs <span class="title">args</span><span class="params">(when, getDeviceId(), mSource, policyFlags,</span></span></span><br><span class="line"><span class="function"><span class="params">            down ? AKEY_EVENT_ACTION_DOWN : AKEY_EVENT_ACTION_UP,</span></span></span><br><span class="line"><span class="function"><span class="params">            AKEY_EVENT_FLAG_FROM_SYSTEM, keyCode, scanCode, newMetaState, downTime)</span></span>;</span><br><span class="line">    <span class="comment">//通知key事件</span></span><br><span class="line">    getListener()-&gt;notifyKey(&amp;args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>mKeyDowns</code>记录着所有按下的键</li>
+<li><code>mDownTime</code>记录按下时间点</li>
+<li><code>KeyboardInputMapper</code>的<code>mContext</code>指向<code>InputReader</code>，<code>getListener()</code>获取<code>mQueuedListener</code>，然后调用<code>notifyKey</code>接口</li>
+</ul>
+<p>InputListener.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> QueuedInputListener::notifyKey(<span class="keyword">const</span> NotifyKeyArgs* args) &#123;</span><br><span class="line">    mArgsQueue.push(<span class="keyword">new</span> NotifyKeyArgs(*args));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>把事件放入向量<code>mArgsQueue</code>，然后就是把事件发送给InputDispatcher线程了</p>
+<h5 id="发送事件-QueuedInputListener-gt-flush"><a href="#发送事件-QueuedInputListener-gt-flush" class="headerlink" title="发送事件 QueuedInputListener-&gt;flush"></a>发送事件 QueuedInputListener-&gt;flush</h5><p>InputListener.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> QueuedInputListener::<span class="built_in">flush</span>() &#123;</span><br><span class="line">    <span class="keyword">size_t</span> count = mArgsQueue.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">        NotifyArgs* args = mArgsQueue[i];</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        args-&gt;notify(mInnerListener);</span><br><span class="line">        <span class="keyword">delete</span> args;</span><br><span class="line">    &#125;</span><br><span class="line">    mArgsQueue.<span class="built_in">clear</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遍历刚才的向量，调用对应的notify接口，<code>NotifyArgs</code>的实现子类包含：</p>
+<ul>
+<li>NotifyConfigurationChangedArgs</li>
+<li>NotifyKeyArgs</li>
+<li>NotifyMotionArgs</li>
+<li>NotifySwitchArgs</li>
+<li>NotifyDeviceResetArgs</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> NotifyKeyArgs::notify(<span class="keyword">const</span> sp&lt;InputListenerInterface&gt;&amp; listener) <span class="keyword">const</span> &#123;</span><br><span class="line">    listener-&gt;notifyKey(<span class="keyword">this</span>); <span class="comment">// this是指NotifyKeyArgs</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>InputDispatcher.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> InputDispatcher::notifyKey(<span class="keyword">const</span> NotifyKeyArgs* args) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!validateKeyEvent(args-&gt;action)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">int32_t</span> keyCode = args-&gt;keyCode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (keyCode == AKEYCODE_HOME) &#123;</span><br><span class="line">        <span class="keyword">if</span> (args-&gt;action == AKEY_EVENT_ACTION_DOWN) &#123;</span><br><span class="line">            property_set(<span class="string">"sys.domekey.down"</span>, <span class="string">"1"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (args-&gt;action == AKEY_EVENT_ACTION_UP) &#123;</span><br><span class="line">            property_set(<span class="string">"sys.domekey.down"</span>, <span class="string">"0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (metaState &amp; AMETA_META_ON &amp;&amp; args-&gt;action == AKEY_EVENT_ACTION_DOWN) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (args-&gt;action == AKEY_EVENT_ACTION_UP) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    KeyEvent event; <span class="comment">//初始化KeyEvent对象</span></span><br><span class="line">    event.initialize(args-&gt;deviceId, args-&gt;source, args-&gt;action,</span><br><span class="line">            flags, keyCode, args-&gt;scanCode, metaState, <span class="number">0</span>,</span><br><span class="line">            args-&gt;downTime, args-&gt;eventTime);</span><br><span class="line">    <span class="comment">//mPolicy是指NativeInputManager对象。</span></span><br><span class="line">    mPolicy-&gt;interceptKeyBeforeQueueing(&amp;event, <span class="comment">/*byref*/</span> policyFlags);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> needWake;</span><br><span class="line">    &#123;</span><br><span class="line">        mLock.lock();</span><br><span class="line">        <span class="keyword">if</span> (shouldSendKeyToInputFilterLocked(args)) &#123;</span><br><span class="line">            mLock.unlock();</span><br><span class="line">            policyFlags |= POLICY_FLAG_FILTERED;</span><br><span class="line">            <span class="comment">//当inputEventObj不为空, 则事件被filter所拦截</span></span><br><span class="line">            <span class="keyword">if</span> (!mPolicy-&gt;filterInputEvent(&amp;event, policyFlags)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mLock.lock();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int32_t</span> repeatCount = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//创建KeyEntry对象</span></span><br><span class="line">        KeyEntry* newEntry = <span class="keyword">new</span> KeyEntry(args-&gt;eventTime,</span><br><span class="line">                args-&gt;deviceId, args-&gt;source, policyFlags,</span><br><span class="line">                args-&gt;action, flags, keyCode, args-&gt;scanCode,</span><br><span class="line">                metaState, repeatCount, args-&gt;downTime);</span><br><span class="line">        <span class="comment">//将KeyEntry放入队列</span></span><br><span class="line">        needWake = enqueueInboundEventLocked(newEntry);</span><br><span class="line">        mLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (needWake) &#123;</span><br><span class="line">        <span class="comment">//唤醒InputDispatcher线程</span></span><br><span class="line">        mLooper-&gt;wake();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要完成以下几个事情：</p>
+<ul>
+<li>调用<code>NativeInputManager.interceptKeyBeforeQueueing</code>，加入队列前执行拦截动作，但并不改变流程<ul>
+<li>​    <code>IMS.interceptKeyBeforeQueueing</code></li>
+<li>​    <code>InputMonitor.interceptKeyBeforeQueueing</code>（继承<code>IMS.WindowManagerCallbacks</code>）</li>
+<li>​    <code>PhoneWindowManager.interceptKeyBeforeQueueing</code>（继承<code>WindowManagerPolicy</code>）</li>
+</ul>
+</li>
+<li>当<code>mInputFilterEnabled=true</code>（该值默认为<code>false</code>，可通过<code>setInputFilterEnabled</code>设置），则调用<code>NativeInputManager.filterInputEvent</code>过滤输入事件<ul>
+<li>​    当返回值为<code>false</code>则过滤事件，不往下发</li>
+</ul>
+</li>
+<li>生成<code>KeyEvent</code>，并调用<code>enqueueInboundEventLocked</code>，把事件加入到<code>InputDispatchered</code>的成员变量<code>mInboundQueue</code>。</li>
+<li>唤醒<code>InputDispatcher</code>线程</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Looper::wake() &#123;</span><br><span class="line">    <span class="keyword">uint64_t</span> inc = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">ssize_t</span> nWrite = TEMP_FAILURE_RETRY(<span class="built_in">write</span>(mWakeEventFd, &amp;inc, <span class="keyword">sizeof</span>(<span class="keyword">uint64_t</span>)));</span><br><span class="line">    <span class="keyword">if</span> (nWrite != <span class="keyword">sizeof</span>(<span class="keyword">uint64_t</span>)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (errno != EAGAIN) &#123;</span><br><span class="line">            ALOGW(<span class="string">"Could not write wake signal, errno=%d"</span>, errno);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>InputDispatcher</code>线程主要是用来跟JAVA层的IMS和WMS通信的，给JAVA层IMS上报输入事件，找到对应的Window。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>您的赞赏是对我最大的肯定<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android/Input子系统//" class="article-tag-list-link color4">Input子系统</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/18/Android-InputSystem-4-EventHub/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
 
   
-  <div class="category-all-page">
-    <h2>共计&nbsp;4&nbsp;个分类</h2>
-    <ul class="category-list-item-list"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Android/">Android</a><span class="category-list-item-list-count">12</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Android/HIDL/">HIDL</a><span class="category-list-item-list-count">6</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Android/ION%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">ION内存管理</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Android/Input%E5%AD%90%E7%B3%BB%E7%BB%9F/">Input子系统</a><span class="category-list-item-list-count">4</span></li></ul></li></ul>
-  </div>
+<nav id="article-nav">
   
-</article>
+  
+    <a href="/2019/12/17/Android-InputSystem-3-IMS-StartFlow/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android Input子系统 -- InputManagerService启动</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#InputReader线程"><span class="toc-number">1.1.</span> <span class="toc-text">InputReader线程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#loopOnce函数"><span class="toc-number">1.2.</span> <span class="toc-text">loopOnce函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#EventHub-gt-getEvents"><span class="toc-number">1.3.</span> <span class="toc-text">EventHub-&gt;getEvents</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#InputReader-gt-processEventsLocked"><span class="toc-number">1.4.</span> <span class="toc-text">InputReader-&gt;processEventsLocked</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#事件处理-processEventsForDeviceLocked"><span class="toc-number">1.5.</span> <span class="toc-text">事件处理 processEventsForDeviceLocked</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#按键事件处理流程"><span class="toc-number">1.6.</span> <span class="toc-text">按键事件处理流程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#发送事件-QueuedInputListener-gt-flush"><span class="toc-number">1.7.</span> <span class="toc-text">发送事件 QueuedInputListener-&gt;flush</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  
+
+
           </div>
         </div>
       </div>
@@ -205,7 +489,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
