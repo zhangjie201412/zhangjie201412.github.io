@@ -15,14 +15,14 @@
 <meta property="og:site_name" content="我是Android开发者">
 <meta property="og:description" content="回顾一下上一节我们学会了如何创建HIDL的server端和client端，对于那些没玩过Android O或者以上的BSP开发者而言，可以吹上一阵子牛逼了，毕竟比人家多了一个技能，面试的时候也可以装一下了^_^ OK，我们还知道了在Android O或者以上的Android版本上创建一个HAL模块的一般流程是如何的，我们这一节来看一个比较简单的东西，也是每个模块基本必不可少的一个玩意儿，那就是回调">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;julizi.gif">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;HAL-CALLBACK.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;HAL-CALLBACK-SAMPLE.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8ChDHA.gif">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8C4pU1.jpg">
+<meta property="og:image" content="hhttps:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8C48Kg.png">
 <meta property="article:published_time" content="2019-12-15T13:03:17.000Z">
-<meta property="article:modified_time" content="2019-12-16T00:05:43.617Z">
+<meta property="article:modified_time" content="2020-03-10T02:14:12.838Z">
 <meta property="article:author" content="木叶♀HinaTa">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;julizi.gif">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8ChDHA.gif">
   
     <link rel="alternative" href="/atom.xml" title="我是Android开发者" type="application/atom+xml">
   
@@ -194,10 +194,10 @@
 <a id="more"></a>
 
 <h4 id="注册回调"><a href="#注册回调" class="headerlink" title="注册回调"></a><strong>注册回调</strong></h4><p>怎么个回事呢，我们来举一个栗子</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/julizi.gif" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8ChDHA.gif" alt=""></p>
 <p>我们把HAL独立为一个单独的进程，client也是一个单独的进程，那么对于一般的模块而言，都是需要从底层（HAL以及以下）获取数据，比如sensor，需要获取sensor数据，Camera，需要获取camera的raw、yuv等数据流，那么对于软件设计而言，如果是同步的话，很简单，我们通过getXXX()函数来获取即可，但是如果是异步的，比如底层的实现是中端的机制，你不知道他什么时候会出来数据，那么这个时候通常的，我们会通过callback来实现<strong>异步的回调</strong>。</p>
 <p>看下面的图就比较清楚了</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/HAL-CALLBACK.jpg" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8C4pU1.jpg" alt=""></p>
 <p>我们这一节就来实现简单的回调机制。</p>
 <h4 id="实战演练"><a href="#实战演练" class="headerlink" title="实战演练"></a>实战演练</h4><p>这个例子很简单，写一个简单的HAL模块，就跟之前的差不多，然后我们在<strong>.hal</strong>文件里面加入一个<strong>setCallback</strong>函数，传入一个callback指针，当我们HAL的server端起来的时候会起一个线程，每隔5秒钟时间调用一下传入的这个回调函数，实现回调的机制，OK，废话不多说，上代码。</p>
 <p>看一下HIDL 接口IHello.hal</p>
@@ -244,7 +244,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cc_binary &#123;</span><br><span class="line"> name: "test_hello",</span><br><span class="line"> srcs: [</span><br><span class="line"> "test_hello.cpp",</span><br><span class="line"> ],</span><br><span class="line"> shared_libs: [</span><br><span class="line"> "liblog",</span><br><span class="line"> "libutils",</span><br><span class="line"> "libhidlbase",</span><br><span class="line"> "libhidltransport",</span><br><span class="line"> "libutils",</span><br><span class="line"> "vendor.sample.hello@1.0",</span><br><span class="line"> ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>现在可以手动运行测试程序了，还是跟上一节介绍的一样，可以看到logcat有如下输出：</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/HAL-CALLBACK-SAMPLE.png" alt=""></p>
+<p><img src="hhttps://s2.ax1x.com/2020/03/10/8C48Kg.png" alt=""></p>
 <p>OK，达到了我们的预期效果了。</p>
 <p>这一节我们就简单的介绍了在Android O/P里面使用HIDL的回调机制是如何实现的。</p>
 
@@ -422,7 +422,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 木叶♀HinaTa
+    		&copy; 2020 木叶♀HinaTa
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

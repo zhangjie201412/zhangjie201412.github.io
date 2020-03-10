@@ -15,13 +15,13 @@
 <meta property="og:site_name" content="我是Android开发者">
 <meta property="og:description" content="内存共享和大块内存的使用，在实际场景下面的需求是很多的，这里，举三个简单的应用场景：  用户态和内核态共享内存 用户态不同进程内存共享 内核态中使用ION分配buffer  用户态和内核态共享内存">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;Android-ION-User-Shared.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;native_handler.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8C7yNj.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8C764s.png">
 <meta property="article:published_time" content="2019-12-16T13:42:30.000Z">
-<meta property="article:modified_time" content="2019-12-16T13:50:10.671Z">
+<meta property="article:modified_time" content="2020-03-10T02:34:22.502Z">
 <meta property="article:author" content="木叶♀HinaTa">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;Android-ION-User-Shared.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8C7yNj.png">
   
     <link rel="alternative" href="/atom.xml" title="我是Android开发者" type="application/atom+xml">
   
@@ -225,7 +225,7 @@
 <li>通过<code>ion_map_kernel</code>传入<code>ion_handle</code>获取到虚拟地址，与用户态的<code>mmap</code>函数功能类似</li>
 </ul>
 <h5 id="用户态不同进程共享内存"><a href="#用户态不同进程共享内存" class="headerlink" title="用户态不同进程共享内存"></a>用户态不同进程共享内存</h5><p>写一个简单的例子介绍如何在不同进程中进行内存共享</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/Android-ION-User-Shared.png" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8C7yNj.png" alt=""></p>
 <p>创建<code>socketpair</code>，获取两个可以连通的socket文件描述符，这两个文件描述符分别给父子进程使用，一个写一个读，这里其实和使用管道是类似的作用，但是管道是单向的，<code>socketpair</code>是双向读写的。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> pipefd[<span class="number">2</span>];</span><br><span class="line"><span class="comment">/*创建父子进程管道*/</span></span><br><span class="line"><span class="keyword">int</span> ret = socketpair(PF_UNIX, SOCK_DGRAM, <span class="number">0</span>, pipefd);</span><br></pre></td></tr></table></figure>
 
@@ -257,7 +257,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">recv_fd</span><span class="params">(<span class="keyword">int</span> fd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iov</span>[1];</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">msghdr</span> <span class="title">msg</span>;</span></span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    iov[<span class="number">0</span>].iov_base = buf;</span><br><span class="line">    iov[<span class="number">0</span>].iov_len = <span class="number">1</span>;</span><br><span class="line">    msg.msg_name = <span class="literal">NULL</span>;</span><br><span class="line">    msg.msg_namelen = <span class="number">0</span>;</span><br><span class="line">    msg.msg_iov = iov;</span><br><span class="line">    msg.msg_iovlen = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">cmsghdr</span> <span class="title">cm</span>;</span></span><br><span class="line">    msg.msg_control = &amp;cm;</span><br><span class="line">    msg.msg_controllen = CONTROL_LEN;</span><br><span class="line"></span><br><span class="line">    recvmsg(fd, &amp;msg, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> fd_to_read = *(<span class="keyword">int</span>*)CMSG_DATA(&amp;cm);</span><br><span class="line">    <span class="keyword">return</span> fd_to_read;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>总的来说，在Android中使用ION机制进行共享内存还是很方便的。其中比较有意思的是如何把<code>shared_fd</code>传到不同的进程中，本例使用的是<code>socketpair</code>机制，在Android 8或以上的版本中，Android官方推荐使用binder机制通过把shared_fd封装成<code>native_handler</code>发送给别的进程。</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/native_handler.png" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8C764s.png" alt=""></p>
 <p>有兴趣的可以去尝试一下。</p>
 
       
@@ -434,7 +434,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 木叶♀HinaTa
+    		&copy; 2020 木叶♀HinaTa
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

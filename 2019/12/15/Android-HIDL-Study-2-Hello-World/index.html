@@ -15,16 +15,16 @@
 <meta property="og:site_name" content="我是Android开发者">
 <meta property="og:description" content="写在前面程序员有个癖好，无论是学习什么新知识，都喜欢以HelloWorld作为一个简单的例子来开头，咱们也不例外。 OK，咱这里都是干货，废话就不多说啦，学习HIDL呢咱们还是需要一些准备工作和门槛的。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;FWK_HAL.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;treble-sample.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;Naruto_flow.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;run_service.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;test_code.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8CfXTI.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8C7lnO.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8C7ZN9.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8ChVkq.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8ChnpT.png">
 <meta property="article:published_time" content="2019-12-15T13:02:17.000Z">
-<meta property="article:modified_time" content="2019-12-16T00:01:53.101Z">
+<meta property="article:modified_time" content="2020-03-10T02:31:52.381Z">
 <meta property="article:author" content="木叶♀HinaTa">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;q2k8089lz.bkt.clouddn.com&#x2F;FWK_HAL.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2020&#x2F;03&#x2F;10&#x2F;8CfXTI.png">
   
     <link rel="alternative" href="/atom.xml" title="我是Android开发者" type="application/atom+xml">
   
@@ -218,7 +218,7 @@
 <li><p>等等</p>
 </li>
 </ul>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/FWK_HAL.png" alt="ape_fwk_hal.png"></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8CfXTI.png" alt="ape_fwk_hal.png"></p>
 <p>这些啊都是Android设备上的硬件，因为Google理论上只关心Android的框架层和上层软件，但是上层软件依赖于底层的硬件实现，但是每家手机厂商，或者说是CPU厂商底层硬件的实现都是不一样的，所以这个HAL层基本都是手机厂商或者CPU厂商去实现的，Google只是作为一个框架的指导，和Framework层API的接口定义，这些接口的实现都得由HAL去完成。</p>
 <p>那么我们的Naruto就肩负了这个重任喽，控制底层硬件嘛，底层硬件都是由Linux kernel驱动控制的，提供文件读写就可以简单控制驱动啦，咱们这边就搞虚拟驱动好了，省略了kernel driver的实现，有机会我们还可以在别的文章中去聊聊驱动，哈哈，毕竟哥啥都会。（吹牛逼不用上税）</p>
 <p>等等，我们这个是HelloWorld，好吧，Naruto，你就提供一个HelloWorld的接口吧，大材小用了。</p>
@@ -286,7 +286,7 @@
 <p>没问题 对吧，好了，我们后面还有很多事情要做呢。</p>
 <h4 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a><strong>调用流程</strong></h4><p>上面呢我们完成了实现端的代码和编译，我们这节来看一下整个HIDL的调用流程，因为里面涉及到好几个库，有好多同学都被这些库给搞混了，我们来看看这些库的顺序吧。</p>
 <p>HIDL软件包中自动生成的文件会链接到与软件包同名的单个共享库。该共享库还会导出单个头文件INruto.h，用于在binder客户端和服务端的接口文件，下面的图诠释了我们的INaruto.hal编译后生成的文件走向，从官网拷贝过来的，大家不要在乎文件名哈：</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/treble-sample.png" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8C7lnO.png" alt=""></p>
 <ul>
 <li><p><code>**IFoo.h**</code> - 描述 C++ 类中的纯 <code>IFoo</code> 接口；它包含 <code>IFoo.hal</code> 文件中的 <code>IFoo</code> 接口中所定义的方法和类型，必要时会转换为 C++ 类型。<strong>不包含</strong>与用于实现此接口的 RPC 机制（例如 <code>HwBinder</code>）相关的详细信息。类的命名空间包含软件包名称和版本号，例如 <code>::android::hardware::samples::IFoo::V1_0</code>。客户端和服务器都包含此标头：客户端用它来调用方法，服务器用它来实现这些方法。</p>
 </li>
@@ -311,7 +311,7 @@
 <li><p><a href="mailto:android.hardware.naruto@1.0-service.rc">android.hardware.naruto@1.0-service.rc</a>: Android native 进程入口</p>
 </li>
 </ul>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/Naruto_flow.png" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8C7ZN9.png" alt=""></p>
 <p>大概流程就是这个样子。</p>
 <h4 id="启动binder-server端进程"><a href="#启动binder-server端进程" class="headerlink" title="启动binder server端进程"></a><strong>启动binder server端进程</strong></h4><p>还记得我们之前创建的两个文件吗，我们还没有去实现呢，先来看一下rc文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service naruto_hal_service /vendor/bin/hw/android.hardware.naruto@1.0-service</span><br><span class="line">    class hal</span><br><span class="line">    user system</span><br><span class="line">    group system</span><br></pre></td></tr></table></figure>
@@ -339,9 +339,9 @@
 
 <p>然后我们来测试一下代码吧：</p>
 <p>手动运行service：</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/run_service.png" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8ChVkq.png" alt=""></p>
 <p>运行测试代码：</p>
-<p><img src="http://q2k8089lz.bkt.clouddn.com/test_code.png" alt=""></p>
+<p><img src="https://s2.ax1x.com/2020/03/10/8ChnpT.png" alt=""></p>
 <p>看到没有，我们的测试代码传入”JayZhang”字符串，结果输出”Hello World, JayZhang”, 符合我们的预期结果。</p>
 <p>所以本篇就结束喽，吃瓜群众还不赶快码代码，好记性不如烂笔头啊，自己不写一遍怎么记得住。</p>
 <p>这知识简单的如本HIDL的使用，不要着急，后面会有别的知识点，毕竟这只是一个简单的HelloWorld。</p>
@@ -520,7 +520,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 木叶♀HinaTa
+    		&copy; 2020 木叶♀HinaTa
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
