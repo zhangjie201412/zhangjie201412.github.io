@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Android ION内存管理(3) -- dma-buf | 我是Android开发者</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前面讲了如何在内核空间以及用户空间利用ion的接口分配内存、共享内存、同步内存数据，但是最近在浏览最新的AOSP的系统变更的时候发现接口都发生了改变： https:&#x2F;&#x2F;source.android.com&#x2F;devices&#x2F;architecture&#x2F;kernel&#x2F;ion_abi_changes  意思就是在kernel 4.14版本和之后ION的接口有一个重大的重构，使得在使用kernel 4.14">
+  <meta name="description" content="前面讲了如何在内核空间以及用户空间利用ion的接口分配内存、共享内存、同步内存数据，但是最近在浏览最新的AOSP的系统变更的时候发现接口都发生了改变： https:&#x2F;&#x2F;source.android.com&#x2F;devices&#x2F;architecture&#x2F;kernel&#x2F;ion_abi_changes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android ION内存管理(3) -- dma-buf">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;02&#x2F;16&#x2F;Android-ION-3-DMA-BUF&#x2F;index.html">
 <meta property="og:site_name" content="我是Android开发者">
-<meta property="og:description" content="前面讲了如何在内核空间以及用户空间利用ion的接口分配内存、共享内存、同步内存数据，但是最近在浏览最新的AOSP的系统变更的时候发现接口都发生了改变： https:&#x2F;&#x2F;source.android.com&#x2F;devices&#x2F;architecture&#x2F;kernel&#x2F;ion_abi_changes  意思就是在kernel 4.14版本和之后ION的接口有一个重大的重构，使得在使用kernel 4.14">
+<meta property="og:description" content="前面讲了如何在内核空间以及用户空间利用ion的接口分配内存、共享内存、同步内存数据，但是最近在浏览最新的AOSP的系统变更的时候发现接口都发生了改变： https:&#x2F;&#x2F;source.android.com&#x2F;devices&#x2F;architecture&#x2F;kernel&#x2F;ion_abi_changes">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="c:%5CUsers%5CH151136%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210216215558673.png">
 <meta property="og:image" content="c:%5CUsers%5CH151136%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210216230140148.png">
 <meta property="article:published_time" content="2021-02-16T13:42:30.000Z">
-<meta property="article:modified_time" content="2021-02-16T15:02:52.707Z">
+<meta property="article:modified_time" content="2021-02-16T15:09:26.076Z">
 <meta property="article:author" content="木叶♀HinaTa">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="c:%5CUsers%5CH151136%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210216215558673.png">
@@ -190,6 +190,8 @@
       
         <p>前面讲了如何在内核空间以及用户空间利用<code>ion</code>的接口分配内存、共享内存、同步内存数据，但是最近在浏览最新的<code>AOSP</code>的系统变更的时候发现接口都发生了改变：</p>
 <p><a href="https://source.android.com/devices/architecture/kernel/ion_abi_changes" target="_blank" rel="noopener">https://source.android.com/devices/architecture/kernel/ion_abi_changes</a></p>
+<a id="more"></a>
+
 <p><img src="C:%5CUsers%5CH151136%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210216215558673.png" alt="image-20210216215558673"></p>
 <p>意思就是在kernel 4.14版本和之后ION的接口有一个重大的重构，使得在使用kernel 4.14和之后的版本之后的一些代码都需要注意很多地方需要修改。特别是Display，Camera，DRM等模块的kernel驱动和硬件抽象层的代码。</p>
 <p>下面来看看有哪些改动的地方。</p>
